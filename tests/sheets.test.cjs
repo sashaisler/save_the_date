@@ -4,6 +4,11 @@ const fs = require('node:fs');
 const rows = [];
 let failWrite = false;
 const textRanges = [];
+const properties = {SITE_ORIGIN:'https://example.com', SPREADSHEET_ID:'test-sheet'};
+const emails = [];
+const triggers = [];
+let quota = 100, failEmail = false, failTracking = '';
+const display = value => typeof value === 'string' && value.startsWith("'") ? value.slice(1) : value == null ? '' : String(value);
 const sheet = {
   getLastRow: () => rows.length,
   appendRow: row => { if (failWrite) throw Error('Service unavailable'); rows.push(row); },
@@ -12,14 +17,21 @@ const sheet = {
     setFontWeight() { return this; }, setBackground() { return this; },
     getValue: () => rows[row - 1]?.[column - 1] || '',
     setValue(value) { rows[row - 1][column - 1] = value; return this; },
+    getDisplayValues: () => Array.from({length:count || 1},(_,i) => Array.from({length:width || 1},(_,j) => display(rows[row - 1 + i]?.[column - 1 + j]))),
+    setValues(values) {
+      if (failTracking && values[0][0] === failTracking) throw Error('Tracking write failed');
+      values.forEach((items,i) => items.forEach((value,j) => { rows[row-1+i][column-1+j]=value; })); return this;
+    },
     setNumberFormat(format) { textRanges.push({row, column, count, width, format}); return this; },
-    createTextFinder: text => ({ matchEntireCell() { return this; }, findNext: () => rows.slice(row - 1, row - 1 + count).find(item => item[column - 1] === text) || null })
+    createTextFinder: text => ({ matchEntireCell() { return this; }, findNext: () => { const index = rows.findIndex((item,i) => i >= row-1 && i < row-1+count && item[column-1]===text); return index < 0 ? null : {getRow:()=>index+1}; } })
   })
 };
 const context = {
-  PropertiesService: {getScriptProperties: () => ({getProperty: key => ({SITE_ORIGIN:'https://example.com', SPREADSHEET_ID:'test-sheet'})[key]})},
-  LockService: {getScriptLock: () => ({waitLock(){}, hasLock:()=>true, releaseLock(){}})},
-  SpreadsheetApp: {openById: () => ({getSheetByName: () => sheet})},
+  PropertiesService: {getScriptProperties: () => ({getProperty: key => properties[key],setProperty:(key,value) => {properties[key]=value;}})},
+  LockService: {getScriptLock: () => ({waitLock(){}, tryLock:()=>true, hasLock:()=>true, releaseLock(){}})},
+  SpreadsheetApp: {openById: () => ({getSheetByName: () => sheet}),flush(){}},
+  MailApp: {getRemainingDailyQuota:()=>quota,sendEmail: email => { if(failEmail) throw Error('Send unavailable'); emails.push(email); quota--; }},
+  ScriptApp: {getProjectTriggers:()=>triggers,newTrigger: handler => ({timeBased(){return this;},everyHours(hours){assert.equal(hours,1);return this;},create(){triggers.push({getHandlerFunction:()=>handler});}})},
   HtmlService: {XFrameOptionsMode:{ALLOWALL:'allow'},createHtmlOutput: html => ({html,setXFrameOptionsMode(){return this;}})}
 };
 vm.createContext(context);
@@ -94,4 +106,68 @@ for (const email of ['', '  ', 'not-an-email', 'a@@example.com', 'guest name@exa
   assert.equal(post({requestId:nextId(),email}).ok,false,'Rejects missing or malformed email addresses');
 }
 assert.equal(rows.length,beforeInvalidEmail,'Invalid emails never write rows');
-console.log('Passed: writes, retries, formula handling, title and email validation, and existing-sheet migration.');
+assert.equal(emails.length,0,'Sending stays disabled before owner authorization');
+context.enableConfirmationEmails(); context.enableConfirmationEmails();
+assert.equal(triggers.length,1,'Enabling twice creates only one queue trigger');
+assert.equal(properties.CONFIRMATION_EMAILS_ENABLED,'true');
+const emailRequest = nextId();
+assert.equal(post({requestId:emailRequest,title:'Dr.',firstName:'A < B & C',hasPartner:'yes',partnerName:'Saved Spouse',email:'confirmed@example.com',attendance:'maybe'}).emailStatus,'sent');
+assert.equal(emails.length,1);
+assert.equal(emails[0].to,'confirmed@example.com');
+assert.match(emails[0].body,/Dr\./);
+assert.match(emails[0].body,/Saved Spouse/);
+assert.match(emails[0].body,/ZIP \/ postal code: 00000/);
+assert.match(emails[0].body,/Can you attend\?: Not sure yet/);
+assert.match(emails[0].htmlBody,/A &lt; B &amp; C/,'Escapes guest text in HTML');
+assert.doesNotMatch(emails[0].htmlBody,/>A < B & C</);
+assert.equal(rows.at(-1)[14],'Sent');
+assert.ok(rows.at(-1)[15] instanceof Date || String(rows.at(-1)[15]));
+assert.equal(rows.at(-1)[16],1);
+assert.equal(post({requestId:emailRequest,email:'different@example.com'}).emailStatus,'sent');
+assert.equal(emails.length,1,'Repeated submissions never email again or change the recipient');
+quota=0;
+const queuedId=nextId();
+assert.equal(post({requestId:queuedId,email:'queued@example.com',firstName:'Saved Name'}).emailStatus,'queued');
+assert.equal(rows.at(-1)[16],0,'Quota exhaustion does not consume an attempt');
+assert.equal(emails.length,1);
+quota=100;
+assert.equal(post({requestId:queuedId,email:'wrong@example.com',firstName:'Wrong Name'}).emailStatus,'sent');
+assert.equal(emails.at(-1).to,'queued@example.com','Retries email the saved recipient');
+assert.match(emails.at(-1).body,/Saved Name/,'Retries email the saved answers');
+failWrite=true;
+const beforeWriteFailure=emails.length;
+assert.equal(post({requestId:nextId()}).ok,false);
+assert.equal(emails.length,beforeWriteFailure,'A failed save never sends an email');
+failWrite=false;
+failEmail=true;
+const failedId=nextId();
+const failedResult=post({requestId:failedId});
+assert.equal(failedResult.ok,true,'A mail failure does not discard a saved response');
+assert.equal(failedResult.emailStatus,'queued');
+assert.equal(rows.at(-1)[14],'Retry');
+post({requestId:failedId}); post({requestId:failedId});
+assert.equal(rows.at(-1)[14],'Failed');
+assert.equal(rows.at(-1)[16],3,'Caps send attempts');
+failEmail=false;
+quota=0;
+assert.equal(post({requestId:nextId(),email:'queue-only@example.com'}).emailStatus,'queued');
+const queueRow=rows.at(-1);
+quota=100;
+context.sendPendingConfirmations();
+assert.equal(queueRow[14],'Sent','Hourly queue sends pending confirmations');
+assert.equal(rows[1][14],undefined,'Historical responses are never emailed automatically');
+const afterSweep=emails.length;
+context.sendPendingConfirmations();
+assert.equal(emails.length,afterSweep,'Queue never repeats a sent or permanently failed email');
+failTracking='Sent';
+const ambiguousId=nextId();
+assert.equal(post({requestId:ambiguousId}).ok,true);
+assert.equal(rows.at(-1)[14],'Sending');
+failTracking='';
+const afterAmbiguous=emails.length;
+context.sendPendingConfirmations(); post({requestId:ambiguousId});
+assert.equal(emails.length,afterAmbiguous,'Ambiguous sends require owner review, never automatic duplication');
+// Produce a fictional preview using the actual email template.
+const previewRow=['','','Alex','Example','Jordan Example','123 Sample Street','4B','Sample Town','NY','00123','United States','Hope so','Dr.','alex@example.com'];
+fs.writeFileSync('/private/tmp/wedding-confirmation-preview.html',context.confirmationEmail_(previewRow).htmlBody);
+console.log('Passed: saved responses, validation, migration, confirmation content, escaping, deduplication, quotas, queue, send failures and owner enablement.');

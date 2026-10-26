@@ -103,11 +103,12 @@
     $('#form-error').textContent = message; $('#form-error').hidden = false;
     pending = false; button.disabled = false; button.firstElementChild.textContent = 'Try again';
   };
-  const showSuccess = preview => {
+  const showSuccess = (preview, emailStatus) => {
     clearTimeout(timer); pending = false; activeRequest = null; retryRequest = null;
     form.hidden = true; $('#success').hidden = false;
     $('#success-title').textContent = preview ? 'Preview' : 'Thank you.';
-    $('#success-copy').textContent = preview ? 'Preview only. Nothing has been sent or saved.' : 'Your response has been saved.';
+    const emailCopy = emailStatus === 'sent' ? ' A confirmation with your answers has been emailed to you.' : emailStatus === 'queued' ? ' Your confirmation email is queued for delivery.' : '';
+    $('#success-copy').textContent = preview ? 'Preview only. Nothing has been sent or saved.' : 'Your response has been saved.' + emailCopy;
     $('#edit-response').firstChild.textContent = preview ? 'Back to the preview ' : 'Submit another response ';
     $('#success').focus({ preventScroll: true });
     $('#success').scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'center' });
@@ -132,7 +133,7 @@
     const trusted = event.origin === 'https://script.google.com' || event.origin === 'https://script.googleusercontent.com' || /^https:\/\/[a-z0-9-]+\.script\.googleusercontent\.com$/.test(event.origin) || /^https:\/\/[a-z0-9-]+-script\.googleusercontent\.com$/.test(event.origin);
     if (!trusted || !pending || !activeRequest || event.data?.type !== 'wedding-response' || event.data.requestId !== activeRequest) return;
     clearTimeout(timer);
-    if (event.data.ok === true) showSuccess(false);
+    if (event.data.ok === true) showSuccess(false, event.data.emailStatus);
     else { activeRequest = null; retryRequest = null; showError('Your details weren’t saved. Please try again in a moment.'); }
   });
   $('#edit-response').addEventListener('click', () => {

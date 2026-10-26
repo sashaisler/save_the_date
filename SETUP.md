@@ -36,6 +36,16 @@ The [Apps Script project](https://script.google.com/u/0/home/projects/1s5fZiPWO6
 
 Keep the spreadsheet private. The endpoint only accepts submissions; it does not expose guest rows. To disable collection, remove the Apps Script deployment and clear `sheetsEndpoint` in the website configuration.
 
+## Guest confirmation emails
+
+New saved responses receive a confirmation at their submitted Email Address, with all answers and the wedding date/location. The template uses Columbia blue and has both HTML and plain-text versions. Sending uses the script owner's Google account via MailApp; no paid service is required.
+
+After saving this script, select **enableConfirmationEmails** and click **Run** as the owner. Authorize Google's email-sending and trigger permissions. This enables immediate sending and one hourly retry trigger. Then update the existing web-app deployment to a new version. This owner setup is required once, not for each guest.
+
+The script appends **Confirmation email**, **Email sent at**, and **Email attempts** in columns O–Q. Existing responses keep blank tracking fields and are not emailed automatically. A saved response remains successful if email fails. Queued messages wait for quota; transient failures retry up to three times. A **Sending** status left after an interrupted execution requires owner review before retrying, to avoid duplicate emails. A **Sent** status means Google accepted the message for sending, not proof of inbox delivery. Guests may need to check spam.
+
+Consumer Google accounts currently allow 100 email recipients per day through Apps Script; queued responses are checked hourly when quota is available. See [Google's quotas](https://developers.google.com/apps-script/guides/services/quotas) and [MailApp documentation](https://developers.google.com/apps-script/reference/mail/mail-app). To pause outgoing email without stopping response collection, set the Script Property `CONFIRMATION_EMAILS_ENABLED` to `false`.
+
 ## Connect a different Google Sheet
 
 This setup uses a Google Apps Script web app attached to your own spreadsheet. No paid database service or API key is required. Your Google account's Apps Script limits apply. Until this setup is complete, the page clearly identifies itself as a preview and does not collect or save submissions.
