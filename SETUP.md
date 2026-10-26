@@ -4,11 +4,11 @@ The website lives in `dist/`. It is a static page with no install or build step.
 
 ## The scrolling story
 
-The invitation uses a single pinned watercolor scene. Scrolling moves through five chapters: opening, names, date, venue, and a note to guests. Butterflies and petals move independently; the small pause control stops decorative animation. Reduced-motion preferences remove that animation and the camera movement.
+The invitation uses a single pinned watercolor scene. Scrolling moves through four chapters: opening, names, date, and venue. Butterflies and petals move independently; the small pause control stops decorative animation. Reduced-motion preferences remove that animation and the camera movement.
 
 The questions follow the story in three steps: names and optional partner, mailing address, and likely attendance. Next validates the current step; Back retains all values. The Google Sheets connection remains the same.
 
-Original generated artwork and its prompt are documented in `design/ARTWORK.md`.
+Original generated artwork and its prompt are documented in `design/ARTWORK.md`. Copy and Columbia-inspired styling preferences are documented in `design/STYLE.md`.
 
 ## Add your photos
 
@@ -23,7 +23,7 @@ Original generated artwork and its prompt are documented in `design/ARTWORK.md`.
    },
    ```
 
-The three optional photo slots are faded into the names, venue, and closing chapters. Their paths are blank placeholders in the configuration; leaving them blank keeps the illustrated scene. Portrait or square photos work best. A missing image leaves the illustrated background in place. You can also set `time` and `registryUrl` when they are available. Registry URLs must start with `https://`.
+The three optional photo slots are faded into the names, venue, and opening chapters. Their paths are blank placeholders in the configuration; leaving them blank keeps the illustrated scene. Portrait or square photos work best. A missing image leaves the illustrated background in place. You can also set `time` and `registryUrl` when they are available. Registry URLs must start with `https://`.
 
 ## Response connection
 

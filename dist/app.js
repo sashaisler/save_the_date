@@ -6,19 +6,19 @@
   const clamp = value => Math.max(0, Math.min(1, value));
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   document.querySelectorAll('[data-name]').forEach(el => { el.textContent = config.names[Number(el.dataset.name)]; });
-  document.title = `${config.names.join(' & ')} — A little love story`;
+  document.title = `${config.names.join(' & ')} — Save the date`;
   $('.wedding-date').setAttribute('aria-label', config.dateLabel);
   if (config.venue !== 'Woodbury Jewish Center') $('[data-venue]').textContent = config.venue;
   $('[data-location]').textContent = config.location;
   if (config.time) $('[data-time]').textContent = config.time;
   if (config.registryUrl && /^https:\/\//.test(config.registryUrl)) {
-    $('#registry-link').href = config.registryUrl; $('#registry-link').hidden = false; $('#registry-pending').hidden = true;
+    $('#registry-link').href = config.registryUrl; $('#registry-link').hidden = false; $('.registry-note').hidden = false; $('#registry-pending').hidden = true;
   }
   for (const [key, path] of Object.entries(config.photos)) {
     if (!path) continue;
     const holder = document.querySelector(`[data-photo="${key}"]`);
     if (!holder) continue;
-    const image = new Image(); image.alt = `A favorite moment with ${config.names.join(' and ')}`; image.loading = 'lazy';
+    const image = new Image(); image.alt = `Photo of ${config.names.join(' and ')}`; image.loading = 'lazy';
     image.addEventListener('load', () => { holder.replaceChildren(image); holder.hidden = false; }); image.src = path;
   }
 
@@ -90,7 +90,7 @@
 
   // The guest questions are three short chapters, with their values retained when going back.
   const steps = Array.from(document.querySelectorAll('[data-step]'));
-  const stepLabels = ['01 — A LITTLE ABOUT YOU', '02 — AN INVITATION, JUST FOR YOU', '03 — SAVE A LITTLE SPACE FOR US'];
+  const stepLabels = ['01 — NAME', '02 — ADDRESS', '03 — ATTENDANCE'];
   let currentStep = 0;
   const showStep = (index, focus = true) => {
     currentStep = Math.max(0, Math.min(steps.length - 1, index));
@@ -144,10 +144,9 @@
   const showSuccess = preview => {
     clearTimeout(timer); pending = false; activeRequest = null; retryRequest = null;
     form.hidden = true; $('#success').hidden = false;
-    $('#success-eyebrow').textContent = preview ? 'A LITTLE DRESS REHEARSAL' : 'SEALED WITH LOVE';
-    $('#success-title').textContent = preview ? 'Looks lovely on you.' : 'You’re part of our story.';
-    $('#success-copy').textContent = preview ? 'This is a preview. Nothing has been sent or saved. Once the Google Sheet is connected, your guests’ responses will appear there.' : 'Your details have been saved. We can’t wait to celebrate this next chapter with you.';
-    $('#edit-response').firstChild.textContent = preview ? 'Back to the preview ' : 'Send another response ';
+    $('#success-title').textContent = preview ? 'Preview' : 'Thank you.';
+    $('#success-copy').textContent = preview ? 'Preview only. Nothing has been sent or saved.' : 'Your response has been saved.';
+    $('#edit-response').firstChild.textContent = preview ? 'Back to the preview ' : 'Submit another response ';
     $('#success').focus({ preventScroll: true });
     $('#success').scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'center' });
   };
@@ -159,7 +158,7 @@
     retryRequest = activeRequest;
     $('#requestId').value = activeRequest;
     form.action = endpoint;
-    pending = true; button.disabled = true; button.firstElementChild.textContent = 'Sending a little love…';
+    pending = true; button.disabled = true; button.firstElementChild.textContent = 'Submitting…';
     timer = setTimeout(() => {
       activeRequest = null;
       showError('We couldn’t confirm your response. Please try again — we’ll avoid adding it twice if it already arrived.');
@@ -176,6 +175,6 @@
   $('#edit-response').addEventListener('click', () => {
     showStep(0, false); form.reset(); $('#partner-field').hidden = true; partner.disabled = true; partner.required = false;
     $('#success').hidden = true; form.hidden = false; $('#form-error').hidden = true;
-    button.disabled = false; button.firstElementChild.textContent = 'Send with love'; $('#firstName').focus();
+    button.disabled = false; button.firstElementChild.textContent = 'Submit'; $('#firstName').focus();
   });
 })();
