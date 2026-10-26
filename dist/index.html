@@ -13,7 +13,7 @@
   <link rel="preload" as="image" href="assets/garden-invitation.webp">
   <link rel="stylesheet" href="styles.css?v=20261026-title">
   <script src="config.js" defer></script>
-  <script src="app.js?v=20261026-title" defer></script>
+  <script src="app.js?v=20261026-spouse" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#your-details">Skip to questions</a>
@@ -41,8 +41,8 @@
           <div class="field title-field"><label for="title">Title <span class="optional">(optional)</span></label><select id="title" name="title" autocomplete="honorific-prefix"><option value="">Select a title</option><option value="Mr.">Mr.</option><option value="Mrs.">Mrs.</option><option value="Ms.">Ms.</option><option value="Rabbi">Rabbi</option><option value="Dr.">Dr.</option><option value="Other">Other</option></select></div>
           <div class="field" id="other-title-field" hidden><label for="titleOther">Other title <span aria-hidden="true">*</span></label><input id="titleOther" name="titleOther" maxlength="100" placeholder="Your title" autocomplete="off" disabled></div>
           <div class="form-grid"><div class="field"><label for="firstName">First name <span aria-hidden="true">*</span></label><input id="firstName" name="firstName" required autocomplete="given-name" maxlength="100" placeholder="Your first name"></div><div class="field"><label for="lastName">Last name <span aria-hidden="true">*</span></label><input id="lastName" name="lastName" required autocomplete="family-name" maxlength="100" placeholder="Your last name"></div></div>
-          <div class="partner-choice"><label class="checkbox-label"><input id="hasPartner" name="hasPartner" type="checkbox" value="yes"><span>Include my spouse, fiancé(e), or partner</span></label></div>
-          <div class="field partner-field" id="partner-field" hidden><label for="partnerName">Their full name <span aria-hidden="true">*</span></label><input id="partnerName" name="partnerName" autocomplete="off" maxlength="200" placeholder="Your partner’s first and last name" disabled></div>
+          <input id="hasPartner" name="hasPartner" type="hidden" value="">
+          <div class="field"><label for="partnerName">Spouse or Fiance's Name <span class="optional">(if applicable)</span></label><input id="partnerName" name="partnerName" autocomplete="off" maxlength="200" placeholder="First and last name"></div>
           <div class="step-actions first-step-actions"><button class="next-step" type="button" data-next>Next <span aria-hidden="true">→</span></button></div></fieldset>
 <fieldset class="question-step" data-step="1" hidden><legend>Mailing address</legend>
           <div class="field"><label for="street">Street address <span aria-hidden="true">*</span></label><input id="street" name="street" required autocomplete="address-line1" maxlength="250" placeholder="House number and street"></div>

@@ -136,11 +136,10 @@
   syncTitle();
 
   const partner = $('#partnerName');
-  $('#hasPartner').addEventListener('change', event => {
-    const checked = event.target.checked;
-    $('#partner-field').hidden = !checked; partner.disabled = !checked; partner.required = checked;
-    if (checked) partner.focus(); else partner.value = '';
-  });
+  // Keep the existing Sheets contract while showing a single optional spouse/fiance field.
+  const syncSpouseName = () => { $('#hasPartner').value = partner.value.trim() ? 'yes' : ''; };
+  partner.addEventListener('input', syncSpouseName);
+  syncSpouseName();
   const endpoint = config.sheetsEndpoint;
   const connected = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(endpoint);
   $('#preview-note').hidden = connected;
@@ -164,6 +163,7 @@
     $('#success').scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'center' });
   };
   form.addEventListener('submit', event => {
+    syncSpouseName();
     if (pending) { event.preventDefault(); return; }
     $('#form-error').hidden = true;
     if (!connected) { event.preventDefault(); showSuccess(true); return; }
@@ -186,7 +186,7 @@
     else { activeRequest = null; retryRequest = null; showError('Your details weren’t saved. Please try again in a moment.'); }
   });
   $('#edit-response').addEventListener('click', () => {
-    showStep(0, false); form.reset(); syncTitle(); $('#partner-field').hidden = true; partner.disabled = true; partner.required = false;
+    showStep(0, false); form.reset(); syncTitle(); syncSpouseName();
     $('#success').hidden = true; form.hidden = false; $('#form-error').hidden = true;
     button.disabled = false; button.firstElementChild.textContent = 'Submit'; $('#firstName').focus();
   });
