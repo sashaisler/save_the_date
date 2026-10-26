@@ -2,6 +2,14 @@
 
 The website lives in `dist/`. It is a static page with no install or build step. All personal settings are in `dist/config.js`.
 
+## The scrolling story
+
+The invitation uses a single pinned watercolor scene. Scrolling moves through five chapters: opening, names, date, venue, and a note to guests. Butterflies and petals move independently; the small pause control stops decorative animation. Reduced-motion preferences remove that animation and the camera movement.
+
+The questions follow the story in three steps: names and optional partner, mailing address, and likely attendance. Next validates the current step; Back retains all values. The Google Sheets connection remains the same.
+
+Original generated artwork and its prompt are documented in `design/ARTWORK.md`.
+
 ## Add your photos
 
 1. Put your photos in `dist/assets/` (for example `hero.jpg`, `together.jpg`, and `little-moment.jpg`).
@@ -15,7 +23,7 @@ The website lives in `dist/`. It is a static page with no install or build step.
    },
    ```
 
-The tall hero photo uses an arch crop. Portrait photos work best there; the other spaces accept portrait or square photos. A missing image leaves the designed placeholder in place. You can also set `time` and `registryUrl` when they are available. Registry URLs must start with `https://`.
+The three optional photo slots are faded into the names, venue, and closing chapters. Their paths are blank placeholders in the configuration; leaving them blank keeps the illustrated scene. Portrait or square photos work best. A missing image leaves the illustrated background in place. You can also set `time` and `registryUrl` when they are available. Registry URLs must start with `https://`.
 
 ## Response connection
 

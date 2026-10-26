@@ -1,0 +1,9 @@
+# Illustrated invitation artwork
+
+Created with the built-in image-generation tool for this project, inspired by the watercolor garden and unfolding typography in the user's attached video. The video itself is reference material and is not embedded in the site.
+
+Final website asset: `dist/assets/garden-invitation.webp` (1024 × 1536). Converted from the generated PNG to WebP for a small download. The CSS butterflies, petals, gentle camera movement, and scroll-controlled text are separate animated layers.
+
+## Final prompt
+
+Use case: illustration-story. Asset type: original background artwork for an animated scrolling wedding invitation, not a website mockup. Create one exquisite hand-painted watercolor garden wedding illustration, portrait 2:3 aspect ratio, high detail. Antique ivory cotton paper background, muted sage and olive foliage, trailing wisteria, white flowers, dusty pink roses, pale lilac hydrangeas, delicate branches gracefully framing the upper left and upper right corners. At the very bottom, a beautifully illustrated long gently curving wedding banquet table with flowing ivory linen, a few slender lit taper candles in antique brass holders and small pastel flower arrangements, surrounded by a lush garden lawn. In the far distance a very pale blue wash suggesting water or hazy garden horizon. Dreamy botanical storybook mood, romantic and elegant, delicate fine watercolor brushwork and visible paper texture, restrained colors, soft daylight. Keep the center 65 percent of the image width, from 15 percent down to 70 percent down, empty pale ivory paper for animated text overlays. Flowers occupy the corners and outer margins. The table and grass occupy the bottom. A continuous scene for a full-screen invitation. No people, teddy bears, parrots, butterflies, venue-specific buildings, text, lettering, borders, cards, logos, or watermarks.

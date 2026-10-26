@@ -2,47 +2,75 @@
   'use strict';
   document.documentElement.classList.add('js');
   const config = window.WEDDING;
-  const $ = (selector) => document.querySelector(selector);
+  const $ = selector => document.querySelector(selector);
+  const clamp = value => Math.max(0, Math.min(1, value));
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   document.querySelectorAll('[data-name]').forEach(el => { el.textContent = config.names[Number(el.dataset.name)]; });
-  document.title = `${config.names.join(' & ')} — June 20, 2027`;
-  $('[data-date]').textContent = config.dateLabel;
-  $('[data-venue]').textContent = config.venue;
+  document.title = `${config.names.join(' & ')} — A little love story`;
+  $('.wedding-date').setAttribute('aria-label', config.dateLabel);
+  if (config.venue !== 'Woodbury Jewish Center') $('[data-venue]').textContent = config.venue;
   $('[data-location]').textContent = config.location;
   if (config.time) $('[data-time]').textContent = config.time;
   if (config.registryUrl && /^https:\/\//.test(config.registryUrl)) {
-    $('#registry-link').href = config.registryUrl;
-    $('#registry-link').hidden = false;
-    $('#registry-pending').hidden = true;
+    $('#registry-link').href = config.registryUrl; $('#registry-link').hidden = false; $('#registry-pending').hidden = true;
   }
   for (const [key, path] of Object.entries(config.photos)) {
     if (!path) continue;
     const holder = document.querySelector(`[data-photo="${key}"]`);
-    const image = new Image();
-    image.alt = `A favorite moment with ${config.names.join(' and ')}`;
-    image.loading = key === 'hero' ? 'eager' : 'lazy';
-    image.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0';
-    image.addEventListener('load', () => { holder.replaceChildren(image); holder.removeAttribute('role'); holder.removeAttribute('aria-label'); });
-    image.src = path;
+    if (!holder) continue;
+    const image = new Image(); image.alt = `A favorite moment with ${config.names.join(' and ')}`; image.loading = 'lazy';
+    image.addEventListener('load', () => { holder.replaceChildren(image); holder.hidden = false; }); image.src = path;
   }
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
-    }, { threshold: .08 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  } else { document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')); }
-  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // A pinned illustrated scene works like a film whose playhead is your scroll position.
+  const story = $('#story');
+  const stage = $('.story-pin');
+  const scenes = Array.from(document.querySelectorAll('[data-scene]'));
   let framePending = false;
-  const paintParallax = () => {
+  let currentScene = -1;
+  const getStoryRange = () => Math.max(1, story.offsetHeight - stage.offsetHeight);
+  const drawStory = () => {
     framePending = false;
-    document.querySelectorAll('[data-parallax]').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const offset = Math.max(-30, Math.min(30, (innerHeight / 2 - rect.top - rect.height / 2) * Number(el.dataset.parallax)));
-      el.style.translate = motion.matches ? '0 0' : `0 ${offset}px`;
+    const progress = clamp(-story.getBoundingClientRect().top / getStoryRange());
+    const playhead = progress * (scenes.length - 1);
+    const active = Math.round(playhead);
+    stage.style.setProperty('--story-progress', String(progress));
+    stage.style.setProperty('--camera-scale', motion.matches ? '1' : String(1 + progress * .045));
+    stage.style.setProperty('--camera-y', motion.matches ? '0px' : `${-progress * 12}px`);
+    scenes.forEach((scene, index) => {
+      const distance = Math.abs(playhead - index);
+      const fade = clamp((.5 - distance) / .18);
+      const opacity = motion.matches ? Number(index === active) : fade * fade * (3 - 2 * fade);
+      scene.style.opacity = String(opacity);
+      scene.style.transform = motion.matches ? 'none' : `translate3d(0,${(index - playhead) * 24}px,0) scale(${1 - Math.min(distance, .5) * .035})`;
+      if (active !== currentScene) {
+        const isCurrent = index === active;
+        scene.classList.toggle('is-current', isCurrent);
+        scene.setAttribute('aria-hidden', String(!isCurrent));
+        scene.inert = !isCurrent;
+      }
     });
+    if (active !== currentScene) {
+      $('.chapter-number').textContent = String(active + 1).padStart(2, '0');
+      currentScene = active;
+    }
   };
-  window.addEventListener('scroll', () => { if (!framePending) { framePending = true; requestAnimationFrame(paintParallax); } }, { passive: true });
-  motion.addEventListener('change', paintParallax);
-  paintParallax();
+  const scheduleStory = () => { if (!framePending) { framePending = true; requestAnimationFrame(drawStory); } };
+  window.addEventListener('scroll', scheduleStory, { passive: true });
+  window.addEventListener('resize', scheduleStory);
+  motion.addEventListener('change', scheduleStory);
+  $('#begin-story').addEventListener('click', () => {
+    const top = story.getBoundingClientRect().top + window.scrollY + getStoryRange() / (scenes.length - 1);
+    window.scrollTo({top, behavior: motion.matches ? 'instant' : 'smooth'});
+  });
+  $('#motion-toggle').addEventListener('click', event => {
+    const paused = document.documentElement.classList.toggle('motion-paused');
+    const button = event.currentTarget;
+    button.setAttribute('aria-pressed', String(paused));
+    button.setAttribute('aria-label', paused ? 'Resume decorative animation' : 'Pause decorative animation');
+  });
+  drawStory();
+
   $('#calendar').addEventListener('click', () => {
     const escapeICS = value => value.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
     const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//June Twenty//Wedding//EN', 'BEGIN:VEVENT',
@@ -59,6 +87,41 @@
   siteOrigin.name = 'siteOrigin';
   siteOrigin.value = window.location.origin;
   form.append(siteOrigin);
+
+  // The guest questions are three short chapters, with their values retained when going back.
+  const steps = Array.from(document.querySelectorAll('[data-step]'));
+  const stepLabels = ['01 — A LITTLE ABOUT YOU', '02 — AN INVITATION, JUST FOR YOU', '03 — SAVE A LITTLE SPACE FOR US'];
+  let currentStep = 0;
+  const showStep = (index, focus = true) => {
+    currentStep = Math.max(0, Math.min(steps.length - 1, index));
+    steps.forEach((step, i) => { step.hidden = i !== currentStep; });
+    form.dataset.currentStep = String(currentStep);
+    $('.step-label').textContent = stepLabels[currentStep];
+    document.querySelectorAll('.step-dots i').forEach((dot, i) => dot.classList.toggle('active', i <= currentStep));
+    if (focus) {
+      const legend = steps[currentStep].querySelector('legend');
+      legend.tabIndex = -1; legend.focus({ preventScroll: true });
+      form.scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
+    }
+  };
+  const nextStep = () => {
+    const invalid = Array.from(steps[currentStep].querySelectorAll('input')).find(input => !input.disabled && !input.checkValidity());
+    if (invalid) { invalid.reportValidity(); return; }
+    showStep(currentStep + 1);
+  };
+  document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', nextStep));
+  document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => showStep(currentStep - 1)));
+  form.addEventListener('invalid', event => {
+    const step = event.target.closest('[data-step]');
+    if (step && Number(step.dataset.step) !== currentStep) showStep(Number(step.dataset.step), false);
+  }, true);
+  form.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && currentStep < steps.length - 1 && event.target.tagName === 'INPUT') {
+      event.preventDefault(); nextStep();
+    }
+  });
+  showStep(0, false);
+
   const partner = $('#partnerName');
   $('#hasPartner').addEventListener('change', event => {
     const checked = event.target.checked;
@@ -82,8 +145,8 @@
     clearTimeout(timer); pending = false; activeRequest = null; retryRequest = null;
     form.hidden = true; $('#success').hidden = false;
     $('#success-eyebrow').textContent = preview ? 'A LITTLE DRESS REHEARSAL' : 'SEALED WITH LOVE';
-    $('#success-title').textContent = preview ? 'Looks lovely on you.' : 'You’re on our list.';
-    $('#success-copy').textContent = preview ? 'This is a preview. Nothing has been sent or saved. Once the Google Sheet is connected, your guests’ responses will appear there.' : 'Your details have been saved. Thank you for sharing a little love — your invitation will follow.';
+    $('#success-title').textContent = preview ? 'Looks lovely on you.' : 'You’re part of our story.';
+    $('#success-copy').textContent = preview ? 'This is a preview. Nothing has been sent or saved. Once the Google Sheet is connected, your guests’ responses will appear there.' : 'Your details have been saved. We can’t wait to celebrate this next chapter with you.';
     $('#edit-response').firstChild.textContent = preview ? 'Back to the preview ' : 'Send another response ';
     $('#success').focus({ preventScroll: true });
     $('#success').scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'center' });
@@ -111,7 +174,7 @@
     else { activeRequest = null; retryRequest = null; showError('Your details weren’t saved. Please try again in a moment.'); }
   });
   $('#edit-response').addEventListener('click', () => {
-    form.reset(); $('#partner-field').hidden = true; partner.disabled = true; partner.required = false;
+    showStep(0, false); form.reset(); $('#partner-field').hidden = true; partner.disabled = true; partner.required = false;
     $('#success').hidden = true; form.hidden = false; $('#form-error').hidden = true;
     button.disabled = false; button.firstElementChild.textContent = 'Send with love'; $('#firstName').focus();
   });
