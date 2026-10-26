@@ -22,7 +22,6 @@ function fixture({ native = false, reduced = false, compact = true } = {}) {
   };
   const root = node(), story = node(), stage = node(), artwork = node(), fill = node(), marker = node(), chapter = node();
   const scenes = Array.from({ length: 4 }, node);
-  const begin = node();
   const media = matches => ({ matches, addEventListener(_, callback) { this.change = callback; } });
   const motion = media(reduced), small = media(compact);
   class ResizeObserver { constructor(callback) { resizeObservers.push(callback); } observe() {} }
@@ -38,13 +37,13 @@ function fixture({ native = false, reduced = false, compact = true } = {}) {
   story.querySelector = selector => nodes[selector];
   story.querySelectorAll = () => scenes;
   const document = { documentElement: root, hidden: false,
-    querySelector: selector => ({ '#story': story, '#begin-story': begin })[selector],
+    querySelector: selector => ({ '#story': story })[selector],
     addEventListener(key, callback) { documentEvents[key] = callback; } };
   const flush = () => { let count = 0; while (frames.length) { assert.ok(count++ < 10, 'No animation-frame loop'); frames.shift()(); } };
   vm.runInNewContext(source, { window, document, ResizeObserver, IntersectionObserver,
     requestAnimationFrame: callback => frames.push(callback) });
   flush();
-  return { root, scenes, artwork, fill, marker, chapter, motion, begin, window, document, frames,
+  return { root, scenes, artwork, fill, marker, chapter, motion, window, document, frames,
     reads: () => layoutReads, writes: () => styleWrites, flush,
     scroll(progress) { window.scrollY = 200 + (storyHeight - 1000) * progress; windowEvents.scroll.callback(); flush(); },
     resize(height) { storyHeight = height; resizeObservers[0](); flush(); },
@@ -84,9 +83,8 @@ story.scroll(3);
 assert.equal(story.writes(), afterStoryWrites, 'Scrolling through the questions does no extra animation work');
 story.resize(6000);
 assert.ok(story.reads() > initialReads, 'Resize refreshes cached geometry');
-story.begin.events.click(); story.flush();
-assert.equal(story.window.lastScroll.top, 200 + 5000 / 3);
-assert.equal(story.chapter.textContent, '02', 'Scroll invitation reaches the portrait after resize');
+story.scroll(1 / 3);
+assert.equal(story.chapter.textContent, '02', 'Scrolling reaches the portrait after resize');
 story.windowEvents.scroll.callback(); story.windowEvents.scroll.callback();
 assert.equal(story.frames.length, 1, 'Multiple scroll events coalesce into one frame');
 story.flush();
@@ -95,8 +93,7 @@ const reduced = fixture({ reduced: true });
 reduced.scroll(.5);
 assert.ok(reduced.scenes[2].classList.contains('is-current'));
 assert.ok(reduced.scenes.every(scene => scene.style.opacity === undefined), 'Reduced motion leaves the gentle CSS fade intact');
-reduced.begin.events.click(); reduced.flush();
-assert.equal(reduced.window.lastScroll.behavior, 'instant', 'Reduced motion removes animated page scrolling');
+reduced.scroll(1 / 3);
 reduced.motion.matches = false; reduced.motion.change(); reduced.flush();
 assert.equal(reduced.chapter.textContent, '02', 'Changing the motion preference preserves the active chapter');
 story.intersect(false);

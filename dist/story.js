@@ -69,12 +69,6 @@
     observer.observe(story);
     observer.observe(stage);
   }
-  document.querySelector('#begin-story').addEventListener('click', () => {
-    if (metricsDirty) measure();
-    window.scrollTo({ top: storyTop + scrollRange / (scenes.length - 1),
-      behavior: motion.matches ? 'instant' : 'smooth' });
-  });
-
   // Stop decorative animations while guests fill in the questions or switch tabs.
   let storyVisible = true;
   const syncVisibility = () => root.classList.toggle('story-offscreen', !storyVisible || document.hidden);
