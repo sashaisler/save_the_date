@@ -9,3 +9,5 @@ Use Columbia-inspired details sparingly: Columbia Blue `#B9D9EB`, darker blue ty
 Color reference: [Columbia University Visual Identity — Color](https://visualidentity.columbia.edu/content/color).
 
 Use the nighttime waterfront photograph for the couple portrait. The user rejected the graduation portrait because only one person was wearing a gown.
+
+Butterflies should glide across the screen as unchanged illustrations. Do not rotate them or animate the wings with scaling or perspective changes. Keep the scroll progress line over the painted background. Group the weekday, June 20, year, and time into a balanced date composition.
