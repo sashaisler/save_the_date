@@ -5,16 +5,10 @@
   const story = document.querySelector('#story');
   const stage = story.querySelector('.story-pin');
   const scenes = Array.from(story.querySelectorAll('[data-scene]'));
-  const artwork = story.querySelector('.garden-art');
   const progressFill = story.querySelector('.timeline-track i');
   const chapter = story.querySelector('.chapter-number');
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const compact = window.matchMedia('(max-width: 650px), (hover: none) and (pointer: coarse)');
-  const supportsTimeline = window.CSS?.supports('animation-timeline: view()') &&
-    window.CSS.supports('animation-range: contain 0% contain 100%') &&
-    window.CSS.supports('view-timeline-inset: 0 calc(100% - 100svh)');
   const clamp = value => Math.max(0, Math.min(1, value));
-  let nativeTimeline = false;
   let framePending = false;
   let metricsDirty = true;
   let storyTop = 0;
@@ -37,34 +31,20 @@
     const playhead = progress * (scenes.length - 1);
     const active = Math.round(playhead);
 
-    // Native timelines paint the fades without JS style writes. The fallback
-    // uses the same crossfade and cached geometry for older Safari/Firefox.
-    if (!nativeTimeline) {
-      progressFill.style.transform = `scaleX(${progress})`;
-      if (!compact.matches && !motion.matches) {
-        artwork.style.transform = `translateX(-50%) scale(${1 + progress * .045})`;
-      }
-      scenes.forEach((scene, index) => {
-        const distance = Math.abs(playhead - index);
-        const fade = clamp((.65 - distance) / .3);
-        const opacity = motion.matches ? Number(index === active) : fade * fade * (3 - 2 * fade);
-        const opacityValue = String(opacity);
-        if (scene.style.opacity !== opacityValue) scene.style.opacity = opacityValue;
-        // Invisible scenes do not need transform updates or full-screen layers.
-        const transform = motion.matches || opacity === 0 ? 'none' :
-          `translate3d(0,${Math.max(-.5, Math.min(.5, index - playhead)) * 24}px,0)`;
-        if (scene.style.transform !== transform) scene.style.transform = transform;
-      });
-    }
+    // Only the small progress bar follows scroll position. Scene fades run on
+    // their own clock, so sparse scroll events and fast swipes cannot skip them.
+    progressFill.style.transform = `scaleX(${progress})`;
     if (active !== currentScene) {
       scenes.forEach((scene, index) => {
         const isCurrent = index === active;
         scene.classList.toggle('is-current', isCurrent);
+        scene.classList.toggle('is-before', index < active);
         scene.setAttribute('aria-hidden', String(!isCurrent));
         scene.inert = !isCurrent;
       });
       chapter.textContent = String(active + 1).padStart(2, '0');
       currentScene = active;
+      root.classList.add('story-ready');
     }
   };
   const schedule = () => {
@@ -77,23 +57,11 @@
     previousProgress = -1;
     schedule();
   };
-  const updateMotion = () => {
-    nativeTimeline = Boolean(supportsTimeline && !motion.matches);
-    root.classList.toggle('native-story', nativeTimeline);
-    scenes.forEach(scene => {
-      scene.style.removeProperty('opacity');
-      scene.style.removeProperty('transform');
-    });
-    artwork.style.removeProperty('transform');
-    progressFill.style.removeProperty('transform');
-    invalidateMetrics();
-  };
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', invalidateMetrics, { passive: true });
   window.addEventListener('pageshow', invalidateMetrics);
   window.addEventListener('load', invalidateMetrics);
-  motion.addEventListener('change', updateMotion);
-  compact.addEventListener('change', updateMotion);
+  motion.addEventListener('change', invalidateMetrics);
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(invalidateMetrics);
     observer.observe(story);
@@ -121,5 +89,5 @@
     observer.observe(story);
   }
   document.addEventListener('visibilitychange', syncVisibility);
-  updateMotion();
+  invalidateMetrics();
 })();
