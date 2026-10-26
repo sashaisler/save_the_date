@@ -44,7 +44,9 @@ function doPost(e) {
     }
     var duplicate = sheet.getLastRow() > 1 && sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).createTextFinder(requestId).matchEntireCell(true).findNext();
     if (!duplicate) {
-      var safe = function(value) { return /^[=+\-@\t\r\n]/.test(value) ? "'" + value : value; };
+      // The leading apostrophe tells Sheets to treat every user-supplied value literally.
+      // This prevents formulas and automatic conversion of ZIPs, units, and street numbers.
+      var safe = function(value) { return value ? "'" + value : ''; };
       var attendance = { yes: 'Wouldn’t miss it', maybe: 'Hope so', no: 'Celebrating from afar' };
       // Mailing addresses are text. Preserve leading zeros in ZIP codes and unit numbers.
       sheet.getRange(sheet.getLastRow() + 1, 3, 1, 9).setNumberFormat('@');
