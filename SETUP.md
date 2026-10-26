@@ -32,19 +32,19 @@ The two optional photo slots are faded into the venue and opening chapters. Thei
 
 Configured response sheet: [Save The Date Responses](https://docs.google.com/spreadsheets/d/1vFlW31srW1Y-NUID5nPAWbvNnkK2LUttqqhWI_r7h5g/edit).
 
-The [Apps Script project](https://script.google.com/u/0/home/projects/1s5fZiPWO6Rsj7uxHRRLB6IegDscR3fqCi42ZNXReSsQU8vd7rKYQmWeV/edit) contains the response handler. Its deployed endpoint is set in `dist/config.js`. The sheet ID and website origin are already configured in `google-sheets/Code.gs`; Script Properties are optional overrides.
+The [Apps Script project](https://script.google.com/u/0/home/projects/1s5fZiPWO6Rsj7uxHRRLB6IegDscR3fqCi42ZNXReSsQU8vd7rKYQmWeV/edit) contains the response handler. Its active deployment is version 9, executed as `eytan.sasha.abramowitz@gmail.com`; the endpoint is set in `dist/config.js`. The earlier endpoint uses version 8 and queues responses for the wedding account rather than sending from the previous account. The sheet ID and website origin are already configured in `google-sheets/Code.gs`; Script Properties are optional overrides. The wedding email account has Editor access so its deployment can save responses. General sheet access is Restricted to named collaborators.
 
 Keep the spreadsheet private. The endpoint only accepts submissions; it does not expose guest rows. To disable collection, remove the Apps Script deployment and clear `sheetsEndpoint` in the website configuration.
 
 ## Guest confirmation emails
 
-New saved responses receive a confirmation at their submitted Email Address, with all answers and the wedding date/location. The template uses Columbia blue and has both HTML and plain-text versions. Sending uses the script owner's Google account via MailApp; no paid service is required.
+New saved responses receive a confirmation at their submitted Email Address, with all answers and the wedding date/location. The template uses Columbia blue and has both HTML and plain-text versions. Sending uses `eytan.sasha.abramowitz@gmail.com` via MailApp; no paid service is required. `confirmationSenderAllowed_` checks the effective execution account before sending, so old-account deployments can save and queue responses without sending from the previous address.
 
-After saving this script, select **enableConfirmationEmails** and click **Run** as the owner. Authorize Google's email-sending and trigger permissions. This enables immediate sending and one hourly retry trigger. Then update the existing web-app deployment to a new version. This owner setup is required once, not for each guest.
+After saving this script, sign in as **eytan.sasha.abramowitz@gmail.com**, select **enableConfirmationEmails**, and click **Run**. Authorize Google's email-sending and trigger permissions. This enables immediate sending and one hourly retry trigger. Then update the existing web-app deployment to a new version. This owner setup is required once, not for each guest.
 
 The script appends **Confirmation email**, **Email sent at**, and **Email attempts** in columns O–Q. Existing responses keep blank tracking fields and are not emailed automatically. A saved response remains successful if email fails. Queued messages wait for quota; transient failures retry up to three times. A **Sending** status left after an interrupted execution requires owner review before retrying, to avoid duplicate emails. A **Sent** status means Google accepted the message for sending, not proof of inbox delivery. Guests may need to check spam.
 
-Consumer Google accounts currently allow 100 email recipients per day through Apps Script; queued responses are checked hourly when quota is available. See [Google's quotas](https://developers.google.com/apps-script/guides/services/quotas) and [MailApp documentation](https://developers.google.com/apps-script/reference/mail/mail-app). To pause outgoing email without stopping response collection, set the Script Property `CONFIRMATION_EMAILS_ENABLED` to `false`.
+Consumer Google accounts currently allow 100 email recipients per day through Apps Script; queued responses are checked hourly when quota is available. See [Google's quotas](https://developers.google.com/apps-script/guides/services/quotas) and [MailApp documentation](https://developers.google.com/apps-script/reference/mail/mail-app). To pause outgoing email without stopping response collection, set the Script Property `CONFIRMATION_EMAILS_ENABLED` to `false`. To change the authorized sender later, set `CONFIRMATION_SENDER_EMAIL` to the intended account, deploy while signed in to that account, and recreate its retry trigger. Remove the previous account's retry trigger after the handover.
 
 ## Connect a different Google Sheet
 

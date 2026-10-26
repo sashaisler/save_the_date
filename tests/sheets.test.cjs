@@ -8,6 +8,7 @@ const properties = {SITE_ORIGIN:'https://example.com', SPREADSHEET_ID:'test-shee
 const emails = [];
 const triggers = [];
 let quota = 100, failEmail = false, failTracking = '';
+let effectiveEmail = 'eytan.sasha.abramowitz@gmail.com';
 const display = value => typeof value === 'string' && value.startsWith("'") ? value.slice(1) : value == null ? '' : String(value);
 const sheet = {
   getLastRow: () => rows.length,
@@ -27,6 +28,7 @@ const sheet = {
   })
 };
 const context = {
+  Session: {getEffectiveUser:()=>({getEmail:()=>effectiveEmail})},
   PropertiesService: {getScriptProperties: () => ({getProperty: key => properties[key],setProperty:(key,value) => {properties[key]=value;}})},
   LockService: {getScriptLock: () => ({waitLock(){}, tryLock:()=>true, hasLock:()=>true, releaseLock(){}})},
   SpreadsheetApp: {openById: () => ({getSheetByName: () => sheet}),flush(){}},
@@ -167,6 +169,20 @@ failTracking='';
 const afterAmbiguous=emails.length;
 context.sendPendingConfirmations(); post({requestId:ambiguousId});
 assert.equal(emails.length,afterAmbiguous,'Ambiguous sends require owner review, never automatic duplication');
+const beforeSenderSwitch=emails.length;
+effectiveEmail='sashaisler@gmail.com';
+const senderSwitchId=nextId();
+assert.equal(post({requestId:senderSwitchId}).emailStatus,'queued','Old-account deployments still save responses but do not send');
+assert.equal(rows.at(-1)[16],0,'Wrong sender does not consume email attempts');
+context.sendPendingConfirmations();
+assert.equal(emails.length,beforeSenderSwitch,'Old-account triggers cannot send confirmations');
+assert.throws(()=>context.enableConfirmationEmails(),/configured wedding email account/);
+effectiveEmail='';
+assert.equal(context.confirmationSenderAllowed_(),false,'Missing execution identity cannot send');
+effectiveEmail='eytan.sasha.abramowitz@gmail.com';
+context.sendPendingConfirmations();
+assert.equal(rows.at(-1)[14],'Sent','Wedding account sends responses queued by old deployments');
+assert.equal(emails.length,beforeSenderSwitch+1);
 // Produce a fictional preview using the actual email template.
 const previewRow=['','','Alex','Example','Jordan Example','123 Sample Street','4B','Sample Town','NY','00123','United States','Hope so','Dr.','alex@example.com'];
 fs.writeFileSync('/private/tmp/wedding-confirmation-preview.html',context.confirmationEmail_(previewRow).htmlBody);

@@ -133,6 +133,14 @@ function confirmationEmail_(row) {
   };
 }
 
+// Old deployments may still receive submissions after a sender switch. Save their
+// responses, but only the configured wedding account may send confirmations.
+function confirmationSenderAllowed_() {
+  var expected = PropertiesService.getScriptProperties().getProperty('CONFIRMATION_SENDER_EMAIL') || 'eytan.sasha.abramowitz@gmail.com';
+  var effective = Session.getEffectiveUser().getEmail();
+  return !!effective && effective.toLowerCase() === expected.toLowerCase();
+}
+
 // Caller holds the script lock. Always use the saved answers, never retry request data.
 function sendConfirmationForRow_(sheet, rowNumber) {
   var row = sheet.getRange(rowNumber, 1, 1, 17).getDisplayValues()[0];
@@ -144,7 +152,7 @@ function sendConfirmationForRow_(sheet, rowNumber) {
   var tracking = sheet.getRange(rowNumber, 15, 1, 3);
   if (attempts >= 3) { tracking.setValues([['Failed', '', attempts]]); return 'failed'; }
   if (PropertiesService.getScriptProperties().getProperty('CONFIRMATION_EMAILS_ENABLED') !== 'true') return 'queued';
-  if (MailApp.getRemainingDailyQuota() < 1) return 'queued';
+  if (!confirmationSenderAllowed_() || MailApp.getRemainingDailyQuota() < 1) return 'queued';
   // Record the attempt before sending. An interrupted "Sending" row needs owner review,
   // since automatically retrying an ambiguous send could deliver a duplicate email.
   tracking.setValues([['Sending', '', attempts + 1]]);
@@ -160,7 +168,7 @@ function sendConfirmationForRow_(sheet, rowNumber) {
 
 function sendPendingConfirmations() {
   var properties = PropertiesService.getScriptProperties();
-  if (properties.getProperty('CONFIRMATION_EMAILS_ENABLED') !== 'true') return;
+  if (properties.getProperty('CONFIRMATION_EMAILS_ENABLED') !== 'true' || !confirmationSenderAllowed_()) return;
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(1000)) return;
   try {
@@ -181,6 +189,7 @@ function sendPendingConfirmations() {
 
 // Run manually once as the owner. Google will request send-mail and trigger permissions.
 function enableConfirmationEmails() {
+  if (!confirmationSenderAllowed_()) throw new Error('Sign in as the configured wedding email account to enable confirmations.');
   MailApp.getRemainingDailyQuota();
   var exists = ScriptApp.getProjectTriggers().some(function(trigger) {
     return trigger.getHandlerFunction() === 'sendPendingConfirmations';

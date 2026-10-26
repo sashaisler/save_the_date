@@ -10,5 +10,5 @@ window.WEDDING = {
   // The names chapter uses assets/sasha-eytan-waterfront.webp directly in index.html.
   photos: { together: '', littleMoment: '' },
   // Paste the deployed Google Apps Script /exec URL here. See SETUP.md.
-  sheetsEndpoint: 'https://script.google.com/macros/s/AKfycbz3AVEN22MhQDqz9Ze9ywPfVFVuA40W2Zbw6cpn9_v_VzHVyypQ8uKmI8rAp9lJzTv_QQ/exec'
+  sheetsEndpoint: 'https://script.google.com/macros/s/AKfycbwzhOT3cSnuJVYGhmX6L2X2_bdzkoDRtTWTfmUK3Ut90laXVqSmwHb2gtsYpBFzBi4BiA/exec'
 };
