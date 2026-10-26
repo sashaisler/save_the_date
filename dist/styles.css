@@ -131,8 +131,12 @@
 /* An unframed blue hairline and small moving dot over the watercolor. */
 .story-timeline{width:14px;gap:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
 .story-timeline>span,.story-timeline>.progress-chevron{display:none}
-.timeline-track{width:3px;height:110px;overflow:visible;background:#8ba3b5;box-shadow:0 0 0 1px #faf7ef99}
+.timeline-track{width:4px;height:110px;overflow:visible;background:#8ba3b5;box-shadow:0 0 0 1px #faf7ef99}
 .timeline-track i{background:#345672;border-radius:2px}
-.timeline-position{position:absolute;left:50%;top:0;width:6px;height:6px;border-radius:50%;background:#345672;box-shadow:0 0 0 2px #f4f0e5b3;transform:translate(-50%,-50%);transition:top .2s linear}
+.timeline-position{position:absolute;left:50%;top:0;width:7px;height:7px;border-radius:50%;background:#345672;box-shadow:0 0 0 2px #f4f0e5b3;transform:translate(-50%,-50%);transition:top .2s linear}
 @media(max-width:650px){.story-timeline{right:14px}.flight-one{width:32px;top:10%}.flight-two{width:26px;top:10%}}
 @media(max-height:650px){.flight-one,.flight-two{top:6%}.timeline-track{height:90px}}
+
+/* Four quiet breaks divide the invitation progress into its four chapters. */
+.timeline-track{-webkit-mask-image:linear-gradient(to bottom,#000 0 calc(25% - 2.5px),transparent calc(25% - 2.5px) calc(25% + 2.5px),#000 calc(25% + 2.5px) calc(50% - 2.5px),transparent calc(50% - 2.5px) calc(50% + 2.5px),#000 calc(50% + 2.5px) calc(75% - 2.5px),transparent calc(75% - 2.5px) calc(75% + 2.5px),#000 calc(75% + 2.5px) 100%);mask-image:linear-gradient(to bottom,#000 0 calc(25% - 2.5px),transparent calc(25% - 2.5px) calc(25% + 2.5px),#000 calc(25% + 2.5px) calc(50% - 2.5px),transparent calc(50% - 2.5px) calc(50% + 2.5px),#000 calc(50% + 2.5px) calc(75% - 2.5px),transparent calc(75% - 2.5px) calc(75% + 2.5px),#000 calc(75% + 2.5px) 100%)}
+.story-timeline>.timeline-position{display:block}
