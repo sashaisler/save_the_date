@@ -12,7 +12,7 @@ Original generated artwork and its prompt are documented in `design/ARTWORK.md`.
 
 ## Add your photos
 
-The names chapter features `dist/assets/sasha-eytan-watercolor.webp`, a transparent watercolor portrait based on the couple's Columbia graduation photo. Its image and descriptive alt text are set directly in `dist/index.html`.
+The names chapter features `dist/assets/sasha-eytan-waterfront.webp`, a transparent watercolor portrait based on the couple's nighttime waterfront photo. Its image and descriptive alt text are set directly in `dist/index.html`.
 
 1. Put any extra photos in `dist/assets/` (for example `together.jpg` and `little-moment.jpg`).
 2. Set the two optional paths in `config.js`:
