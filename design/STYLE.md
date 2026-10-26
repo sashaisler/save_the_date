@@ -10,4 +10,4 @@ Color reference: [Columbia University Visual Identity — Color](https://visuali
 
 Use the nighttime waterfront photograph for the couple portrait. The user rejected the graduation portrait because only one person was wearing a gown.
 
-Butterflies should glide across the screen as unchanged illustrations. Do not rotate them or animate the wings with scaling or perspective changes. Keep the scroll progress line over the painted background. Group the weekday, June 20, year, and time into a balanced date composition.
+Butterflies should follow gently rising and falling paths across the open space above the text as unchanged illustrations; keep the central information clear. Avoid straight, constant-speed crossings. Do not rotate them or animate the wings with scaling or perspective changes. Keep the scroll progress line over the painted background, with a dark blue fill and a narrow paper backing for contrast. Group the weekday, June 20, year, and time into a balanced date composition.
