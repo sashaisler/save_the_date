@@ -2,7 +2,7 @@
 
 Created with the built-in image-generation tool for this project, inspired by the watercolor garden and unfolding typography in the user's attached video. The video itself is reference material and is not embedded in the site.
 
-Final website asset: `dist/assets/garden-invitation.webp` (1024 × 1536). Converted from the generated PNG to WebP for a small download. The CSS butterflies, petals, gentle camera movement, and scroll-controlled text are separate animated layers.
+Original background asset (superseded): `dist/assets/garden-invitation.webp` (1024 × 1536). Converted from the generated PNG to WebP for a small download. The CSS butterflies, petals, gentle camera movement, and scroll-controlled text are separate animated layers.
 
 ## Final prompt
 
@@ -29,3 +29,14 @@ Current asset: `dist/assets/sasha-eytan-waterfront.webp`, transparent WebP. The 
 ### Final waterfront portrait prompt
 
 Use case: style-transfer. Create a transparent hand-painted watercolor portrait of the exact two people in the supplied nighttime waterfront photograph. This is a wedding invitation asset. Preserve their recognizable facial identities, natural smiles, hair, body proportions, pose standing close with woman on left and man on right, and their real clothing: her navy blue long-sleeved dress with pale blue and white floral pattern, his charcoal subtle checked suit and open-collar white shirt. Crop from just above their hair to their hips, keeping both heads and torsos fully visible; faces large, carefully painted, faithful to the actual people. Warm natural skin tones, fine watercolor facial detail, soft pigment washes and paper texture in clothing. Muted navy and pale blue colors, elegant delicate watercolor that fits a warm ivory botanical invitation. Completely transparent background; remove all boat railings, water, skyline, buildings and sky. A few very subtle blue-grey watercolor washes may soften the silhouette, with a soft organically dissolving bottom edge. Portrait approximately 4:5 ratio, small transparent margins. No graduation gowns, caps, crowns, logos, wedding gown, added accessories, hearts, text, borders or extra people. Do not substitute generic illustrated faces; render the same real couple recognizably, in a watercolor medium.
+
+
+## Current background — woodland
+
+Created with the built-in image-generation tool by editing the original garden artwork at the user's request. The banquet table and all furnishings are removed. Airy leafy branches, slender trees, moss, ferns and a woodland path frame a pale ivory center. Both the scrolling scene and question-section backdrop use this asset.
+
+Current website background: `dist/assets/woodland-invitation.webp` (1024 × 1536). The original `garden-invitation.webp` is superseded and not referenced by the page.
+
+### Final woodland prompt
+
+Use case: precise-object-edit. Edit the supplied watercolor invitation background into a simple, elegant woodland scene. Preserve the tall 2:3 composition, warm ivory cotton-paper texture, delicate hand-painted watercolor technique, pale sage and olive greens with subtle misty blue distance, and the large clear central space for overlaid invitation typography. Completely remove the banquet table, linen, chairs, candles, dishes, glasses, vases and every other event furnishing. Replace the entire lower third with a quiet forest floor: soft moss, restrained ferns, fine grasses, a few tiny white woodland flowers, slender graceful deciduous trees at the outer edges, and a subtle winding footpath disappearing into a softly misted woodland clearing. The trees should frame rather than fill the image. Simplify the large upper flower bouquets and cascading wisteria into airy leafy branches with only a few delicate white blossoms; no dense floral arrangements. Keep the center 65 percent of the canvas from 15 percent to 70 percent of the height very pale open ivory paper, lightly washed and uncluttered so navy text and a separate portrait remain legible. Atmospheric forest detail is concentrated along the bottom and outer margins, softly feathering into the paper, not a solid rectangular painted landscape. Restrained, refined, natural, peaceful daylight. No table, seating, furniture, candles, wedding decorations, buildings, lake, people, animals, hearts, crowns, lettering, logos, borders or watermarks. Deliver only the background illustration, no website mockup.
