@@ -33,7 +33,7 @@
 
     // Only the small progress bar follows scroll position. Scene fades run on
     // their own clock, so sparse scroll events and fast swipes cannot skip them.
-    progressFill.style.transform = `scaleX(${progress})`;
+    progressFill.style.transform = `scaleY(${progress})`;
     if (active !== currentScene) {
       scenes.forEach((scene, index) => {
         const isCurrent = index === active;
@@ -71,11 +71,6 @@
     if (metricsDirty) measure();
     window.scrollTo({ top: storyTop + scrollRange / (scenes.length - 1),
       behavior: motion.matches ? 'instant' : 'smooth' });
-  });
-  document.querySelector('#motion-toggle').addEventListener('click', event => {
-    const paused = root.classList.toggle('motion-paused');
-    event.currentTarget.setAttribute('aria-pressed', String(paused));
-    event.currentTarget.setAttribute('aria-label', paused ? 'Resume decorative animation' : 'Pause decorative animation');
   });
 
   // Stop decorative animations while guests fill in the questions or switch tabs.

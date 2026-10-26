@@ -4,7 +4,8 @@ window.WEDDING = {
   dateLabel: 'Sunday, June 20th, 2027',
   venue: 'Woodbury Jewish Center',
   location: 'Woodbury, New York',
-  time: '', // e.g. '5:00 in the evening'
+  time: '4:30 PM',
+  calendarStart: '2027-06-20T16:30:00-04:00', // New York daylight time
   registryUrl: '',
   // Optional extra photos for the venue and opening chapters.
   // The names chapter uses assets/sasha-eytan-waterfront.webp directly in index.html.

@@ -9,7 +9,7 @@
   $('.wedding-date').setAttribute('aria-label', config.dateLabel);
   if (config.venue !== 'Woodbury Jewish Center') $('[data-venue]').textContent = config.venue;
   $('[data-location]').textContent = config.location;
-  if (config.time) $('[data-time]').textContent = config.time;
+  if (config.time) document.querySelectorAll('[data-time]').forEach(el => { el.textContent = config.time; });
   if (config.registryUrl && /^https:\/\//.test(config.registryUrl)) {
     $('#registry-link').href = config.registryUrl; $('#registry-link').hidden = false; $('.registry-note').hidden = false; $('#registry-pending').hidden = true;
   }
@@ -23,10 +23,11 @@
 
   $('#calendar').addEventListener('click', () => {
     const escapeICS = value => value.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+    const startsAt = new Date(config.calendarStart).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
     const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//June Twenty//Wedding//EN', 'BEGIN:VEVENT',
       'UID:sasha-eytan-20270620@save-the-date', `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}`,
-      'DTSTART;VALUE=DATE:20270620', 'DTEND;VALUE=DATE:20270621', `SUMMARY:${escapeICS(config.names.join(' & ') + ' are getting married')}`,
-      `LOCATION:${escapeICS(config.venue + ', ' + config.location)}`, 'DESCRIPTION:Save the date! Ceremony time and formal invitation to follow.', 'END:VEVENT', 'END:VCALENDAR'];
+      `DTSTART:${startsAt}`, `SUMMARY:${escapeICS(config.names.join(' & ') + ' are getting married')}`,
+      `LOCATION:${escapeICS(config.venue + ', ' + config.location)}`, 'DESCRIPTION:4:30 PM New York time. Formal invitation and final RSVP to follow.', 'END:VEVENT', 'END:VCALENDAR'];
     const url = URL.createObjectURL(new Blob([lines.join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' }));
     const a = document.createElement('a'); a.href = url; a.download = 'sasha-and-eytan-save-the-date.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   });

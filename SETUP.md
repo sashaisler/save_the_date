@@ -4,11 +4,11 @@ The website lives in `dist/`. It is a static page with no install or build step.
 
 ## The scrolling story
 
-The invitation uses a single pinned watercolor woodland scene, with no banquet table or furniture. The background asset is `dist/assets/woodland-invitation.webp`. Scrolling moves through four chapters: opening, names, date, and venue. Butterflies and petals move independently; the small pause control stops decorative animation. Reduced-motion preferences remove that animation and the camera movement.
+The invitation uses a single pinned watercolor woodland scene, with no banquet table or furniture. The background asset is `dist/assets/woodland-invitation.webp`. Scrolling moves through four chapters: opening, names, date, and venue. Butterflies and petals use self-contained inline SVGs in a separate overlay so they stay visible on Safari. Two butterflies and three petals remain visible on phones; base positions and opacity keep them visible even when animation is stopped. Reduce Motion uses small, slow butterfly and petal drifts, with gentle wing movement. Both decorations animate with Reduce Motion on or off.
 
-`dist/story.js` switches the active chapter using cached scene geometry. Each change runs an independent 850 ms CSS crossfade, so fast swipes and sparse scroll events cannot turn it into a hard cut. Reduced-motion preferences keep a shorter 450 ms opacity fade without movement. Phone/touch layouts keep the forest still and reduce decorative layers; animations pause when the story is offscreen. The form logic remains in `dist/app.js`.
+`dist/story.js` switches the active chapter using cached scene geometry. Each change runs an independent 850 ms CSS crossfade, so fast swipes and sparse scroll events cannot turn it into a hard cut. Reduced-motion preferences keep a shorter 450 ms opacity fade without movement. The opening has a clear “Scroll down to continue” button, and a slim vertical progress line with chapter numbers and a downward chevron stays along the right edge of the story. Phone/touch layouts keep the forest still and reduce decorative layers; animations pause when the story is offscreen. The form logic remains in `dist/app.js`.
 
-The questions follow the story in three steps: optional title, names, the optional “Spouse or Fiance's Name (if applicable)” field, and required Email Address; mailing address; and likely attendance. Title choices are Mr., Mrs., Ms., Rabbi, Dr., and Other. Other reveals a required custom-title field. Next validates the current step; Back retains all values. The response script stores the selected or custom title in column M, headed “Title,” and the email in column N, headed “Email Address,” without shifting existing columns or guest responses. Spouse/fiance names continue to use the existing name column and submission fields; no checkbox is shown.
+The questions use 14 px labels, 17 px inputs, 15 px answer choices and submit text, and larger helper text for readability. The questions follow the story in three steps: optional title, names, the optional “Spouse or Fiance's Name (if applicable)” field, and required Email Address; mailing address; and likely attendance. Title choices are Mr., Mrs., Ms., Rabbi, Dr., and Other. Other reveals a required custom-title field. Next validates the current step; Back retains all values. The response script stores the selected or custom title in column M, headed “Title,” and the email in column N, headed “Email Address,” without shifting existing columns or guest responses. Spouse/fiance names continue to use the existing name column and submission fields; no checkbox is shown.
 
 Original generated artwork and its prompt are documented in `design/ARTWORK.md`. Copy and Columbia-inspired styling preferences are documented in `design/STYLE.md`.
 
@@ -26,7 +26,7 @@ The names chapter features `dist/assets/sasha-eytan-waterfront.webp`, a transpar
    },
    ```
 
-The two optional photo slots are faded into the venue and opening chapters. Their paths are blank placeholders in the configuration; leaving them blank keeps the illustrated scene. Portrait or square photos work best. A missing image leaves the illustrated background in place. You can also set `time` and `registryUrl` when they are available. Registry URLs must start with `https://`.
+The two optional photo slots are faded into the venue and opening chapters. Their paths are blank placeholders in the configuration; leaving them blank keeps the illustrated scene. Portrait or square photos work best. A missing image leaves the illustrated background in place. The wedding time is 4:30 PM New York time, shown in the date and venue chapters. `calendarStart` includes the New York UTC offset for the calendar download. Set `registryUrl` when it is available. Registry URLs must start with `https://`.
 
 ## Response connection
 
@@ -83,7 +83,7 @@ From this directory:
 python3 -m http.server 4173 --directory dist
 ```
 
-Open `http://localhost:4173`. All motion respects the visitor's reduced-motion setting. The calendar download is an all-day hold on June 20, 2027 because the wedding time has not yet been supplied.
+Open `http://localhost:4173`. Reduced Motion keeps page movement still while the requested gentle butterfly and petal animations continue. The calendar download starts at 4:30 PM in New York on June 20, 2027 (20:30 UTC). No end time is specified because it has not been supplied.
 
 ## Hosting
 

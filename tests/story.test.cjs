@@ -22,7 +22,7 @@ function fixture({ native = false, reduced = false, compact = true } = {}) {
   };
   const root = node(), story = node(), stage = node(), artwork = node(), fill = node(), chapter = node();
   const scenes = Array.from({ length: 4 }, node);
-  const begin = node(), pause = node();
+  const begin = node();
   const media = matches => ({ matches, addEventListener(_, callback) { this.change = callback; } });
   const motion = media(reduced), small = media(compact);
   class ResizeObserver { constructor(callback) { resizeObservers.push(callback); } observe() {} }
@@ -38,13 +38,13 @@ function fixture({ native = false, reduced = false, compact = true } = {}) {
   story.querySelector = selector => nodes[selector];
   story.querySelectorAll = () => scenes;
   const document = { documentElement: root, hidden: false,
-    querySelector: selector => ({ '#story': story, '#begin-story': begin, '#motion-toggle': pause })[selector],
+    querySelector: selector => ({ '#story': story, '#begin-story': begin })[selector],
     addEventListener(key, callback) { documentEvents[key] = callback; } };
   const flush = () => { let count = 0; while (frames.length) { assert.ok(count++ < 10, 'No animation-frame loop'); frames.shift()(); } };
   vm.runInNewContext(source, { window, document, ResizeObserver, IntersectionObserver,
     requestAnimationFrame: callback => frames.push(callback) });
   flush();
-  return { root, scenes, artwork, fill, chapter, motion, begin, pause, window, document, frames,
+  return { root, scenes, artwork, fill, chapter, motion, begin, window, document, frames,
     reads: () => layoutReads, writes: () => styleWrites, flush,
     scroll(progress) { window.scrollY = 200 + (storyHeight - 1000) * progress; windowEvents.scroll.callback(); flush(); },
     resize(height) { storyHeight = height; resizeObservers[0](); flush(); },
@@ -56,9 +56,13 @@ const story = fixture();
 assert.ok(story.root.classList.contains('story-ready'));
 assert.ok(story.scenes[0].classList.contains('is-current'));
 const initialReads = story.reads();
+assert.equal(story.fill.style.transform,'scaleY(0)','Progress starts at the top of the vertical track');
+story.scroll(.5);
+assert.equal(story.fill.style.transform,'scaleY(0.5)','The line fills downward with scrolling');
 for (let i = 0; i <= 100; i++) story.scroll(i / 100);
 assert.equal(story.reads(), initialReads, 'Scrolling never measures layout per frame');
 assert.equal(story.chapter.textContent, '04');
+assert.equal(story.fill.style.transform,'scaleY(1)','Venue completes the invitation progress line');
 assert.equal(story.scenes[3].inert, false);
 assert.equal(story.scenes[0].attributes['aria-hidden'], 'true');
 assert.equal(story.windowEvents.scroll.options.passive, true);
@@ -99,6 +103,4 @@ story.intersect(true); story.visibility(true);
 assert.ok(story.root.classList.contains('story-offscreen'));
 story.visibility(false);
 assert.equal(story.root.classList.contains('story-offscreen'), false);
-story.pause.events.click({ currentTarget: story.pause });
-assert.equal(story.pause.attributes['aria-pressed'], 'true');
 console.log('Passed: CSS-owned fades, cached geometry, fast/reverse scrolling, resize, reduced motion, and offscreen pauses.');
