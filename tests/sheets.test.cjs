@@ -24,7 +24,7 @@ const context = {
 };
 vm.createContext(context);
 vm.runInContext(fs.readFileSync('google-sheets/Code.gs','utf8'), context);
-const valid = {requestId:'12345678-1234-4234-8234-123456789012',firstName:'Guest',lastName:'Example',street:'123 Example St',city:'Example',region:'NY',postalCode:'00000',country:'United States',attendance:'yes'};
+const valid = {requestId:'12345678-1234-4234-8234-123456789012',firstName:'Guest',lastName:'Example',email:'guest@example.com',street:'123 Example St',city:'Example',region:'NY',postalCode:'00000',country:'United States',attendance:'yes'};
 const post = values => {
   const result = context.doPost({contentLength:1000,parameter:{...valid,...values}});
   return JSON.parse(result.html.match(/postMessage\((\{.*?\}),/)[1]);
@@ -56,6 +56,7 @@ assert.doesNotMatch(untrustedResult.html,/postMessage/,'Never send acknowledgeme
 assert.equal(rows.length,beforeInvalidOrigin,'Unconfigured hosts do not write rows');
 failWrite=false;
 assert.equal(rows[0][12],'Title','New sheets include a separate title column');
+assert.equal(rows[0][13],'Email Address','New sheets include a separate email column');
 const nextId = () => `${String(rows.length + 100).padStart(8,'0')}-1234-4234-8234-123456789012`;
 for (const title of ['Mr.', 'Mrs.', 'Ms.', 'Rabbi', 'Dr.']) {
   assert.equal(post({requestId:nextId(),title}).ok,true);
@@ -82,4 +83,15 @@ assert.equal(rows[0][12],'Title','Adds a title header to an existing sheet');
 assert.deepEqual(rows[1],oldRow,'Existing responses and columns remain unchanged');
 assert.equal(rows.at(-1)[9],"'00000",'ZIP codes remain in their original column');
 assert.equal(rows.at(-1)[12],"'Rabbi",'New responses put the title in column M');
-console.log('Passed: writes, retries, formula handling, validation, titles, custom titles, and existing-sheet migration.');
+assert.equal(rows[0][13],'Email Address','Adds the email header without shifting existing columns');
+assert.equal(rows.at(-1)[13],"'guest@example.com",'Email addresses go in column N');
+assert.equal(post({requestId:nextId(),email:'  Guest+Wedding@Example.com  '}).ok,true);
+assert.equal(rows.at(-1)[13],"'Guest+Wedding@Example.com",'Trims email without changing its case or plus tag');
+assert.equal(post({requestId:nextId(),email:'=alerts@example.com'}).ok,true);
+assert.equal(rows.at(-1)[13],"'=alerts@example.com",'Email addresses cannot become spreadsheet formulas');
+const beforeInvalidEmail=rows.length;
+for (const email of ['', '  ', 'not-an-email', 'a@@example.com', 'guest name@example.com', 'guest@', 'x'.repeat(250)+'@example.com']) {
+  assert.equal(post({requestId:nextId(),email}).ok,false,'Rejects missing or malformed email addresses');
+}
+assert.equal(rows.length,beforeInvalidEmail,'Invalid emails never write rows');
+console.log('Passed: writes, retries, formula handling, title and email validation, and existing-sheet migration.');
