@@ -12,18 +12,19 @@ Original generated artwork and its prompt are documented in `design/ARTWORK.md`.
 
 ## Add your photos
 
-1. Put your photos in `dist/assets/` (for example `hero.jpg`, `together.jpg`, and `little-moment.jpg`).
-2. Set the three paths in `config.js`:
+The names chapter features `dist/assets/sasha-eytan-watercolor.webp`, a transparent watercolor portrait based on the couple's Columbia graduation photo. Its image and descriptive alt text are set directly in `dist/index.html`.
+
+1. Put any extra photos in `dist/assets/` (for example `together.jpg` and `little-moment.jpg`).
+2. Set the two optional paths in `config.js`:
 
    ```js
    photos: {
-     hero: 'assets/hero.jpg',
      together: 'assets/together.jpg',
      littleMoment: 'assets/little-moment.jpg'
    },
    ```
 
-The three optional photo slots are faded into the names, venue, and opening chapters. Their paths are blank placeholders in the configuration; leaving them blank keeps the illustrated scene. Portrait or square photos work best. A missing image leaves the illustrated background in place. You can also set `time` and `registryUrl` when they are available. Registry URLs must start with `https://`.
+The two optional photo slots are faded into the venue and opening chapters. Their paths are blank placeholders in the configuration; leaving them blank keeps the illustrated scene. Portrait or square photos work best. A missing image leaves the illustrated background in place. You can also set `time` and `registryUrl` when they are available. Registry URLs must start with `https://`.
 
 ## Response connection
 
