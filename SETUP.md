@@ -17,7 +17,15 @@ The website lives in `dist/`. It is a static page with no install or build step.
 
 The tall hero photo uses an arch crop. Portrait photos work best there; the other spaces accept portrait or square photos. A missing image leaves the designed placeholder in place. You can also set `time` and `registryUrl` when they are available. Registry URLs must start with `https://`.
 
-## Connect your Google Sheet
+## Response connection
+
+Configured response sheet: [Save The Date Responses](https://docs.google.com/spreadsheets/d/1vFlW31srW1Y-NUID5nPAWbvNnkK2LUttqqhWI_r7h5g/edit).
+
+The [Apps Script project](https://script.google.com/u/0/home/projects/1s5fZiPWO6Rsj7uxHRRLB6IegDscR3fqCi42ZNXReSsQU8vd7rKYQmWeV/edit) contains the response handler. Its deployed endpoint is set in `dist/config.js`. The sheet ID and website origin are already configured in `google-sheets/Code.gs`; Script Properties are optional overrides.
+
+Keep the spreadsheet private. The endpoint only accepts submissions; it does not expose guest rows. To disable collection, remove the Apps Script deployment and clear `sheetsEndpoint` in the website configuration.
+
+## Connect a different Google Sheet
 
 This setup uses a Google Apps Script web app attached to your own spreadsheet. No paid database service or API key is required. Your Google account's Apps Script limits apply. Until this setup is complete, the page clearly identifies itself as a preview and does not collect or save submissions.
 

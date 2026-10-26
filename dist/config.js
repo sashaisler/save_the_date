@@ -8,5 +8,5 @@ window.WEDDING = {
   registryUrl: '',
   photos: { hero: '', together: '', littleMoment: '' },
   // Paste the deployed Google Apps Script /exec URL here. See SETUP.md.
-  sheetsEndpoint: ''
+  sheetsEndpoint: 'https://script.google.com/macros/s/AKfycbz3AVEN22MhQDqz9Ze9ywPfVFVuA40W2Zbw6cpn9_v_VzHVyypQ8uKmI8rAp9lJzTv_QQ/exec'
 };

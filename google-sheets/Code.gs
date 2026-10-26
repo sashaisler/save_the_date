@@ -1,11 +1,13 @@
 /**
  * Bound to your private response spreadsheet via Extensions > Apps Script.
- * Set Script Properties SPREADSHEET_ID and SITE_ORIGIN, then deploy as a web app.
+ * Already configured for Sasha and Eytan’s response spreadsheet and website.
+ * Paste this whole file into Extensions > Apps Script, save, and deploy as a web app.
+ * Script Properties are optional overrides; no properties need to be added.
  * Execute as: Me. Access: Anyone. Keep the spreadsheet itself private.
  */
 function doPost(e) {
   var properties = PropertiesService.getScriptProperties();
-  var origin = properties.getProperty('SITE_ORIGIN');
+  var origin = properties.getProperty('SITE_ORIGIN') || 'https://june-twenty-save-the-date-2027.islerd.chatgpt.site';
   if (!origin || !/^https:\/\/[^/]+$/.test(origin)) {
     return HtmlService.createHtmlOutput('Please configure SITE_ORIGIN in Script Properties.');
   }
@@ -29,7 +31,7 @@ function doPost(e) {
     if (data.hasPartner === 'yes' && !clean.partnerName) throw new Error('Missing partner name');
     if (data.hasPartner !== 'yes') clean.partnerName = '';
     if (['yes', 'maybe', 'no'].indexOf(data.attendance) === -1) throw new Error('Invalid attendance');
-    var spreadsheetId = properties.getProperty('SPREADSHEET_ID');
+    var spreadsheetId = properties.getProperty('SPREADSHEET_ID') || '1vFlW31srW1Y-NUID5nPAWbvNnkK2LUttqqhWI_r7h5g';
     if (!spreadsheetId) throw new Error('Missing spreadsheet');
     lock = LockService.getScriptLock();
     lock.waitLock(20000);
