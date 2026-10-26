@@ -132,8 +132,8 @@
 /* An unframed blue hairline and small moving dot over the watercolor. */
 .story-timeline{width:14px;gap:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
 .story-timeline>span,.story-timeline>.progress-chevron{display:none}
-.timeline-track{width:2px;height:110px;overflow:visible;background:#8ba3b5;box-shadow:0 0 0 1px #faf7ef99}
+.timeline-track{width:3px;height:110px;overflow:visible;background:#8ba3b5;box-shadow:0 0 0 1px #faf7ef99}
 .timeline-track i{background:#345672;border-radius:2px}
-.timeline-position{position:absolute;left:50%;top:0;width:5px;height:5px;border-radius:50%;background:#345672;box-shadow:0 0 0 2px #f4f0e5b3;transform:translate(-50%,-50%);transition:top .2s linear}
+.timeline-position{position:absolute;left:50%;top:0;width:6px;height:6px;border-radius:50%;background:#345672;box-shadow:0 0 0 2px #f4f0e5b3;transform:translate(-50%,-50%);transition:top .2s linear}
 @media(max-width:650px){.story-timeline{right:14px}.flight-one{width:32px;top:10%}.flight-two{width:26px;top:10%}}
 @media(max-height:650px){.flight-one,.flight-two{top:6%}.timeline-track{height:90px}}
