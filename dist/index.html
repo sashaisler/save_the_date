@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/garden-invitation.webp">
-  <link rel="stylesheet" href="styles.css?v=20261026-waterfront">
+  <link rel="stylesheet" href="styles.css?v=20261026-title">
   <script src="config.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=20261026-title" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#your-details">Skip to questions</a>
@@ -38,6 +38,8 @@
 <p class="preview-note" id="preview-note">PREVIEW · RESPONSES AREN’T BEING COLLECTED YET</p>
 <form id="guest-form" method="POST" target="sheet-response" autocomplete="on" data-current-step="0"><div class="question-progress"><span class="step-label" aria-live="polite">01 — NAME</span><div class="step-dots" aria-hidden="true"><i class="active"></i><i></i><i></i></div></div>
 <fieldset class="question-step" data-step="0"><legend>Name</legend>
+          <div class="field title-field"><label for="title">Title <span class="optional">(optional)</span></label><select id="title" name="title" autocomplete="honorific-prefix"><option value="">Select a title</option><option value="Mr.">Mr.</option><option value="Mrs.">Mrs.</option><option value="Ms.">Ms.</option><option value="Rabbi">Rabbi</option><option value="Dr.">Dr.</option><option value="Other">Other</option></select></div>
+          <div class="field" id="other-title-field" hidden><label for="titleOther">Other title <span aria-hidden="true">*</span></label><input id="titleOther" name="titleOther" maxlength="100" placeholder="Your title" autocomplete="off" disabled></div>
           <div class="form-grid"><div class="field"><label for="firstName">First name <span aria-hidden="true">*</span></label><input id="firstName" name="firstName" required autocomplete="given-name" maxlength="100" placeholder="Your first name"></div><div class="field"><label for="lastName">Last name <span aria-hidden="true">*</span></label><input id="lastName" name="lastName" required autocomplete="family-name" maxlength="100" placeholder="Your last name"></div></div>
           <div class="partner-choice"><label class="checkbox-label"><input id="hasPartner" name="hasPartner" type="checkbox" value="yes"><span>Include my spouse, fiancé(e), or partner</span></label></div>
           <div class="field partner-field" id="partner-field" hidden><label for="partnerName">Their full name <span aria-hidden="true">*</span></label><input id="partnerName" name="partnerName" autocomplete="off" maxlength="200" placeholder="Your partner’s first and last name" disabled></div>

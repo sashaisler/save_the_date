@@ -105,7 +105,7 @@
     }
   };
   const nextStep = () => {
-    const invalid = Array.from(steps[currentStep].querySelectorAll('input')).find(input => !input.disabled && !input.checkValidity());
+    const invalid = Array.from(steps[currentStep].querySelectorAll('input, select')).find(input => !input.disabled && !input.checkValidity());
     if (invalid) { invalid.reportValidity(); return; }
     showStep(currentStep + 1);
   };
@@ -121,6 +121,19 @@
     }
   });
   showStep(0, false);
+
+  const title = $('#title');
+  const otherTitle = $('#titleOther');
+  const syncTitle = (focus = false) => {
+    const isOther = title.value === 'Other';
+    $('#other-title-field').hidden = !isOther;
+    otherTitle.disabled = !isOther;
+    otherTitle.required = isOther;
+    if (!isOther) otherTitle.value = '';
+    else if (focus) otherTitle.focus();
+  };
+  title.addEventListener('change', () => syncTitle(true));
+  syncTitle();
 
   const partner = $('#partnerName');
   $('#hasPartner').addEventListener('change', event => {
@@ -173,7 +186,7 @@
     else { activeRequest = null; retryRequest = null; showError('Your details weren’t saved. Please try again in a moment.'); }
   });
   $('#edit-response').addEventListener('click', () => {
-    showStep(0, false); form.reset(); $('#partner-field').hidden = true; partner.disabled = true; partner.required = false;
+    showStep(0, false); form.reset(); syncTitle(); $('#partner-field').hidden = true; partner.disabled = true; partner.required = false;
     $('#success').hidden = true; form.hidden = false; $('#form-error').hidden = true;
     button.disabled = false; button.firstElementChild.textContent = 'Submit'; $('#firstName').focus();
   });

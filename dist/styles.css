@@ -27,3 +27,8 @@
 .couple-portrait{display:block;width:auto;height:min(43svh,370px);max-width:100%;object-fit:contain}
 @media(max-width:650px){.names-scene{padding:95px 24px 195px}.portrait-composition{gap:15px}.portrait-composition .couple-names{font-size:clamp(39px,11.5vw,50px)!important;gap:10px}.couple-portrait{height:min(43svh,370px)}}
 @media(max-height:650px){.names-scene{padding-top:65px;padding-bottom:115px}.portrait-composition{gap:8px}.portrait-composition .couple-names{font-size:36px!important}.couple-portrait{height:42svh}}
+
+.title-field{max-width:210px}
+.field select{width:100%;min-height:43px;font:13px var(--sans);color:var(--ink);background:transparent;border:0;border-bottom:1px solid #b8cfdd;border-radius:0;padding:10px 0 12px;touch-action:manipulation}
+.field select:focus-visible{outline:2px solid var(--ink);outline-offset:5px}
+@media(max-width:650px){.field select{font-size:16px}}
