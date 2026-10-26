@@ -3,12 +3,14 @@ const vm = require('node:vm');
 const fs = require('node:fs');
 const rows = [];
 let failWrite = false;
+const textRanges = [];
 const sheet = {
   getLastRow: () => rows.length,
   appendRow: row => { if (failWrite) throw Error('Service unavailable'); rows.push(row); },
   setFrozenRows() {},
-  getRange: (row, column, count) => ({
+  getRange: (row, column, count, width) => ({
     setFontWeight() { return this; }, setBackground() { return this; },
+    setNumberFormat(format) { textRanges.push({row, column, count, width, format}); return this; },
     createTextFinder: text => ({ matchEntireCell() { return this; }, findNext: () => rows.slice(row - 1, row - 1 + count).find(item => item[column - 1] === text) || null })
   })
 };
@@ -27,6 +29,10 @@ const post = values => {
 };
 assert.equal(post({}).ok, true);
 assert.equal(rows.length,2,'Creates header and response');
+assert.equal(textRanges[0].format,'@','Store name and address columns as text, including postal codes');
+assert.equal(textRanges[0].column,3);
+assert.equal(textRanges[0].count,1);
+assert.equal(textRanges[0].width,9,'Text formatting includes the postal-code column');
 assert.equal(post({}).ok,true);
 assert.equal(rows.length,2,'Retries do not duplicate a row');
 assert.equal(post({requestId:'22345678-1234-4234-8234-123456789012',firstName:'=IMPORTXML("x")'}).ok,true);

@@ -46,6 +46,8 @@ function doPost(e) {
     if (!duplicate) {
       var safe = function(value) { return /^[=+\-@\t\r\n]/.test(value) ? "'" + value : value; };
       var attendance = { yes: 'Wouldn’t miss it', maybe: 'Hope so', no: 'Celebrating from afar' };
+      // Mailing addresses are text. Preserve leading zeros in ZIP codes and unit numbers.
+      sheet.getRange(sheet.getLastRow() + 1, 3, 1, 9).setNumberFormat('@');
       sheet.appendRow([new Date(), requestId, safe(clean.firstName), safe(clean.lastName), safe(clean.partnerName), safe(clean.street), safe(clean.unit), safe(clean.city), safe(clean.region), safe(clean.postalCode), safe(clean.country), attendance[data.attendance]]);
     }
     ok = true;
