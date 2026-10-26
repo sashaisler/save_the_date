@@ -6,6 +6,7 @@
   const stage = story.querySelector('.story-pin');
   const scenes = Array.from(story.querySelectorAll('[data-scene]'));
   const progressFill = story.querySelector('.timeline-track i');
+  const progressMarker = story.querySelector('.timeline-position');
   const chapter = story.querySelector('.chapter-number');
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const clamp = value => Math.max(0, Math.min(1, value));
@@ -34,6 +35,7 @@
     // Only the small progress bar follows scroll position. Scene fades run on
     // their own clock, so sparse scroll events and fast swipes cannot skip them.
     progressFill.style.transform = `scaleY(${progress})`;
+    progressMarker.style.top = `${progress * 100}%`;
     if (active !== currentScene) {
       scenes.forEach((scene, index) => {
         const isCurrent = index === active;

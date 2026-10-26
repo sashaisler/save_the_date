@@ -11,9 +11,9 @@
 .js .story{height:580svh}.js .story-pin{height:100svh;position:sticky;top:0}.js .story-scene{position:absolute;inset:0;min-height:0;opacity:0;pointer-events:none}.js:not(.story-ready) .story-scene[data-scene="0"]{opacity:1;pointer-events:auto}.js .story-scene.is-current{pointer-events:auto}.js .story-timeline{display:flex}.js .scene-world{transform:none}
 .butterfly{position:absolute;width:46px;height:auto;overflow:visible;opacity:.9;will-change:transform;pointer-events:none}
 /* Restore rising/falling flight paths in the open sky, clear of the invitation. */
-.flight-one{left:-10%;top:6%;width:35px;animation:butterflyOne 24s ease-in-out infinite;animation-delay:-6s}
-.flight-two{left:110%;top:6%;width:28px;animation:butterflyTwo 31s ease-in-out infinite;animation-delay:-18s}
-.flight-three{left:calc(50% + min(34vw,25svh));top:85%;width:22px;animation:butterflyEdge 29s ease-in-out infinite;animation-delay:-19s;opacity:.75}
+.flight-one{left:-10%;top:6%;width:35px;animation:butterflyOne 64s ease-in-out infinite;animation-delay:-16s}
+.flight-two{left:110%;top:6%;width:28px;animation:butterflyTwo 82s ease-in-out infinite;animation-delay:-48s}
+.flight-three{left:calc(50% + min(34vw,25svh));top:85%;width:22px;animation:butterflyEdge 64s ease-in-out infinite;animation-delay:-42s;opacity:.75}
 @keyframes butterflyOne{0%{transform:translate3d(0,0,0)}25%{transform:translate3d(28vw,-6vh,0)}50%{transform:translate3d(55vw,4vh,0)}75%{transform:translate3d(85vw,-4vh,0)}100%{transform:translate3d(125vw,0,0)}}
 @keyframes butterflyTwo{0%{transform:translate3d(0,0,0)}30%{transform:translate3d(-36vw,4vh,0)}65%{transform:translate3d(-75vw,-5vh,0)}100%{transform:translate3d(-130vw,0,0)}}
 @keyframes butterflyEdge{0%,100%{transform:translate3d(0,0,0)}25%{transform:translate3d(-12px,-3vh,0)}50%{transform:translate3d(8px,-6vh,0)}75%{transform:translate3d(-7px,-2vh,0)}}
@@ -78,9 +78,9 @@
 .date-time{margin-top:24px;font-size:14px;font-weight:500;letter-spacing:.12em;color:var(--columbia-navy)}
 /* Keep the requested gentle butterfly and petal movement with Reduce Motion. */
 @media(prefers-reduced-motion:reduce){
-  .flight-one{animation:butterflyOne 38s ease-in-out -10s infinite!important}
-  .flight-two{animation:butterflyTwo 46s ease-in-out -27s infinite!important}
-  .flight-three{animation:butterflyEdge 42s ease-in-out -28s infinite!important}
+  .flight-one{animation:butterflyOne 94s ease-in-out -24s infinite!important}
+  .flight-two{animation:butterflyTwo 118s ease-in-out -69s infinite!important}
+  .flight-three{animation:butterflyEdge 88s ease-in-out -58s infinite!important}
   .petals i{animation:quietPetal 20s ease-in-out infinite!important}
   .petals i:nth-child(even){animation-delay:-10s!important}
 }
@@ -129,11 +129,11 @@
 @media(max-width:650px){.date-scene{padding:110px 32px 170px}.date-main{gap:12px;margin-top:-28px}.date-scene .date-weekday{font-size:24px}.date-scene .date-month{font-size:clamp(59px,17vw,72px)}.date-scene .date-number{font-size:clamp(106px,30vw,128px)}}
 @media(max-height:650px){.date-scene{padding-top:65px;padding-bottom:105px}.date-scene .date-weekday{font-size:22px}.date-scene .date-month{font-size:59px}.date-scene .date-number{font-size:106px}.date-scene .date-year{margin-top:10px}.date-scene .date-time{margin-top:16px;padding-top:13px}}
 
-/* A narrow paper-backed progress marker remains legible over the woodland. */
-.story-timeline{gap:9px;padding:11px 8px 9px;border:1px solid #9bb2c4;border-radius:999px;background:#faf8f0ed;box-shadow:0 2px 10px #243d5a12;color:#294a66;font-size:10px;font-weight:600;line-height:1.2}
-.timeline-track{width:4px;background:#b9ccd8}
-.timeline-track i{background:#294a66}
-.progress-chevron{opacity:1}
-@media(max-width:650px){.story-timeline{right:9px;padding:10px 6px 8px;gap:8px;font-size:10px}.flight-one{width:32px;top:10%}.flight-two{width:26px;top:10%}}
-
-@media(max-height:650px){.flight-one,.flight-two{top:6%}}
+/* An unframed blue hairline and small moving dot over the watercolor. */
+.story-timeline{width:14px;gap:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.story-timeline>span,.story-timeline>.progress-chevron{display:none}
+.timeline-track{width:2px;height:110px;overflow:visible;background:#8ba3b5;box-shadow:0 0 0 1px #faf7ef99}
+.timeline-track i{background:#345672;border-radius:2px}
+.timeline-position{position:absolute;left:50%;top:0;width:5px;height:5px;border-radius:50%;background:#345672;box-shadow:0 0 0 2px #f4f0e5b3;transform:translate(-50%,-50%);transition:top .2s linear}
+@media(max-width:650px){.story-timeline{right:14px}.flight-one{width:32px;top:10%}.flight-two{width:26px;top:10%}}
+@media(max-height:650px){.flight-one,.flight-two{top:6%}.timeline-track{height:90px}}

@@ -20,7 +20,7 @@ function fixture({ native = false, reduced = false, compact = true } = {}) {
       addEventListener(key, callback) { this.events[key] = callback; }
     };
   };
-  const root = node(), story = node(), stage = node(), artwork = node(), fill = node(), chapter = node();
+  const root = node(), story = node(), stage = node(), artwork = node(), fill = node(), marker = node(), chapter = node();
   const scenes = Array.from({ length: 4 }, node);
   const begin = node();
   const media = matches => ({ matches, addEventListener(_, callback) { this.change = callback; } });
@@ -34,7 +34,7 @@ function fixture({ native = false, reduced = false, compact = true } = {}) {
   Object.defineProperty(story, 'offsetHeight', { get() { layoutReads++; return storyHeight; } });
   Object.defineProperty(stage, 'offsetHeight', { get() { layoutReads++; return 1000; } });
   story.getBoundingClientRect = () => { layoutReads++; return { top: 200 - window.scrollY }; };
-  const nodes = { '.story-pin': stage, '.garden-art': artwork, '.timeline-track i': fill, '.chapter-number': chapter };
+  const nodes = { '.story-pin': stage, '.garden-art': artwork, '.timeline-track i': fill, '.timeline-position': marker, '.chapter-number': chapter };
   story.querySelector = selector => nodes[selector];
   story.querySelectorAll = () => scenes;
   const document = { documentElement: root, hidden: false,
@@ -44,7 +44,7 @@ function fixture({ native = false, reduced = false, compact = true } = {}) {
   vm.runInNewContext(source, { window, document, ResizeObserver, IntersectionObserver,
     requestAnimationFrame: callback => frames.push(callback) });
   flush();
-  return { root, scenes, artwork, fill, chapter, motion, begin, window, document, frames,
+  return { root, scenes, artwork, fill, marker, chapter, motion, begin, window, document, frames,
     reads: () => layoutReads, writes: () => styleWrites, flush,
     scroll(progress) { window.scrollY = 200 + (storyHeight - 1000) * progress; windowEvents.scroll.callback(); flush(); },
     resize(height) { storyHeight = height; resizeObservers[0](); flush(); },
@@ -59,10 +59,12 @@ const initialReads = story.reads();
 assert.equal(story.fill.style.transform,'scaleY(0)','Progress starts at the top of the vertical track');
 story.scroll(.5);
 assert.equal(story.fill.style.transform,'scaleY(0.5)','The line fills downward with scrolling');
+assert.equal(story.marker.style.top,'50%','The marker stays at the current scroll position');
 for (let i = 0; i <= 100; i++) story.scroll(i / 100);
 assert.equal(story.reads(), initialReads, 'Scrolling never measures layout per frame');
 assert.equal(story.chapter.textContent, '04');
 assert.equal(story.fill.style.transform,'scaleY(1)','Venue completes the invitation progress line');
+assert.equal(story.marker.style.top,'100%','The marker reaches the end with the progress fill');
 assert.equal(story.scenes[3].inert, false);
 assert.equal(story.scenes[0].attributes['aria-hidden'], 'true');
 assert.equal(story.windowEvents.scroll.options.passive, true);
