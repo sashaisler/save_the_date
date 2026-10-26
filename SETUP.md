@@ -66,4 +66,6 @@ Open `http://localhost:4173`. All motion respects the visitor's reduced-motion s
 
 ## Hosting
 
-The initial Sites deployment is private to you. It must be made public before guests can open it. The `dist/` directory can also be hosted on another static host; update the script's `SITE_ORIGIN` to match. Your own domain is optional.
+The public GitHub Pages address is https://sashaisler.github.io/save_the_date/. The `Deploy wedding website` GitHub Actions workflow publishes only `dist/` when website files change on `main`. In repository Settings → Pages, the publishing source must be **GitHub Actions**. Publishing the repository root directly will fail because the entry page is `dist/index.html`.
+
+The original Sites deployment is private to you. Google Sheets acknowledgements support both the Sites origin and `https://sashaisler.github.io`; each form includes its current origin and the script validates it against these configured addresses. When adding another host, configure its exact HTTPS origin in the script. Your own domain is optional.

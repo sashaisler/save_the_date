@@ -7,11 +7,13 @@
  */
 function doPost(e) {
   var properties = PropertiesService.getScriptProperties();
-  var origin = properties.getProperty('SITE_ORIGIN') || 'https://june-twenty-save-the-date-2027.islerd.chatgpt.site';
-  if (!origin || !/^https:\/\/[^/]+$/.test(origin)) {
-    return HtmlService.createHtmlOutput('Please configure SITE_ORIGIN in Script Properties.');
-  }
+  var primaryOrigin = properties.getProperty('SITE_ORIGIN') || 'https://june-twenty-save-the-date-2027.islerd.chatgpt.site';
   var data = (e && e.parameter) || {};
+  var origin = String(data.siteOrigin || primaryOrigin);
+  var allowedOrigins = [primaryOrigin, 'https://june-twenty-save-the-date-2027.islerd.chatgpt.site', 'https://sashaisler.github.io'];
+  if (!/^https:\/\/[^/]+$/.test(origin) || allowedOrigins.indexOf(origin) === -1) {
+    return HtmlService.createHtmlOutput('This website is not configured to receive submission confirmations.');
+  }
   var requestId = String(data.requestId || '').slice(0, 50);
   var ok = false;
   var lock;

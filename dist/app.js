@@ -54,6 +54,11 @@
   });
 
   const form = $('#guest-form');
+  const siteOrigin = document.createElement('input');
+  siteOrigin.type = 'hidden';
+  siteOrigin.name = 'siteOrigin';
+  siteOrigin.value = window.location.origin;
+  form.append(siteOrigin);
   const partner = $('#partnerName');
   $('#hasPartner').addEventListener('change', event => {
     const checked = event.target.checked;
