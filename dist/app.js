@@ -3,7 +3,6 @@
   document.documentElement.classList.add('js');
   const config = window.WEDDING;
   const $ = selector => document.querySelector(selector);
-  const clamp = value => Math.max(0, Math.min(1, value));
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   document.querySelectorAll('[data-name]').forEach(el => { el.textContent = config.names[Number(el.dataset.name)]; });
   document.title = `${config.names.join(' & ')} — Save the date`;
@@ -21,55 +20,6 @@
     const image = new Image(); image.alt = `Photo of ${config.names.join(' and ')}`; image.loading = 'lazy';
     image.addEventListener('load', () => { holder.replaceChildren(image); holder.hidden = false; }); image.src = path;
   }
-
-  // A pinned illustrated scene works like a film whose playhead is your scroll position.
-  const story = $('#story');
-  const stage = $('.story-pin');
-  const scenes = Array.from(document.querySelectorAll('[data-scene]'));
-  let framePending = false;
-  let currentScene = -1;
-  const getStoryRange = () => Math.max(1, story.offsetHeight - stage.offsetHeight);
-  const drawStory = () => {
-    framePending = false;
-    const progress = clamp(-story.getBoundingClientRect().top / getStoryRange());
-    const playhead = progress * (scenes.length - 1);
-    const active = Math.round(playhead);
-    stage.style.setProperty('--story-progress', String(progress));
-    stage.style.setProperty('--camera-scale', motion.matches ? '1' : String(1 + progress * .045));
-    stage.style.setProperty('--camera-y', motion.matches ? '0px' : `${-progress * 12}px`);
-    scenes.forEach((scene, index) => {
-      const distance = Math.abs(playhead - index);
-      const fade = clamp((.5 - distance) / .18);
-      const opacity = motion.matches ? Number(index === active) : fade * fade * (3 - 2 * fade);
-      scene.style.opacity = String(opacity);
-      scene.style.transform = motion.matches ? 'none' : `translate3d(0,${(index - playhead) * 24}px,0) scale(${1 - Math.min(distance, .5) * .035})`;
-      if (active !== currentScene) {
-        const isCurrent = index === active;
-        scene.classList.toggle('is-current', isCurrent);
-        scene.setAttribute('aria-hidden', String(!isCurrent));
-        scene.inert = !isCurrent;
-      }
-    });
-    if (active !== currentScene) {
-      $('.chapter-number').textContent = String(active + 1).padStart(2, '0');
-      currentScene = active;
-    }
-  };
-  const scheduleStory = () => { if (!framePending) { framePending = true; requestAnimationFrame(drawStory); } };
-  window.addEventListener('scroll', scheduleStory, { passive: true });
-  window.addEventListener('resize', scheduleStory);
-  motion.addEventListener('change', scheduleStory);
-  $('#begin-story').addEventListener('click', () => {
-    const top = story.getBoundingClientRect().top + window.scrollY + getStoryRange() / (scenes.length - 1);
-    window.scrollTo({top, behavior: motion.matches ? 'instant' : 'smooth'});
-  });
-  $('#motion-toggle').addEventListener('click', event => {
-    const paused = document.documentElement.classList.toggle('motion-paused');
-    const button = event.currentTarget;
-    button.setAttribute('aria-pressed', String(paused));
-    button.setAttribute('aria-label', paused ? 'Resume decorative animation' : 'Pause decorative animation');
-  });
-  drawStory();
 
   $('#calendar').addEventListener('click', () => {
     const escapeICS = value => value.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
