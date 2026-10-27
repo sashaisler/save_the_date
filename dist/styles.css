@@ -9,12 +9,12 @@
 .memory{position:absolute;left:50%;top:24%;width:270px;height:310px;transform:translateX(-50%) rotate(-3deg);border-radius:50% 50% 8px 8px;overflow:hidden;opacity:.14;mask-image:linear-gradient(black 65%,transparent);-webkit-mask-image:linear-gradient(black 65%,transparent)}.memory img{width:100%;height:100%;object-fit:cover}.memory-two{transform:translateX(-50%) rotate(3deg)}
 .js .story{height:580svh}.js .story-pin{height:100svh;position:sticky;top:0}.js .story-scene{position:absolute;inset:0;min-height:0;opacity:0;pointer-events:none}.js:not(.story-ready) .story-scene[data-scene="0"]{opacity:1;pointer-events:auto}.js .story-scene.is-current{pointer-events:auto}.js .story-timeline{display:flex}.js .scene-world{transform:none}
 .butterfly{position:absolute;width:46px;height:auto;overflow:visible;opacity:.9;will-change:transform;pointer-events:none}
-/* Restore rising/falling flight paths in the open sky, clear of the invitation. */
-.flight-one{left:-10%;top:6%;width:35px;animation:butterflyOne 64s ease-in-out infinite;animation-delay:-16s}
-.flight-two{left:110%;top:6%;width:28px;animation:butterflyTwo 82s ease-in-out infinite;animation-delay:-48s}
-.flight-three{left:calc(50% + min(34vw,25svh));top:85%;width:22px;animation:butterflyEdge 64s ease-in-out infinite;animation-delay:-42s;opacity:.75}
-@keyframes butterflyOne{0%{transform:translate3d(0,0,0)}25%{transform:translate3d(28vw,-6vh,0)}50%{transform:translate3d(55vw,4vh,0)}75%{transform:translate3d(85vw,-4vh,0)}100%{transform:translate3d(125vw,0,0)}}
-@keyframes butterflyTwo{0%{transform:translate3d(0,0,0)}30%{transform:translate3d(-36vw,4vh,0)}65%{transform:translate3d(-75vw,-5vh,0)}100%{transform:translate3d(-130vw,0,0)}}
+/* Each butterfly keeps its own area, so the moving illustrations stay scattered. */
+.flight-one{left:calc(50% - min(43vw,30svh));top:12%;width:35px;animation:butterflyOne 64s ease-in-out infinite;animation-delay:-16s}
+.flight-two{left:calc(50% + min(39vw,29svh));top:24%;width:28px;animation:butterflyTwo 82s ease-in-out infinite;animation-delay:-48s}
+.flight-three{left:calc(50% - min(43vw,31svh));top:50%;width:22px;animation:butterflyEdge 64s ease-in-out infinite;animation-delay:-42s;opacity:.75}
+@keyframes butterflyOne{0%,100%{transform:translate3d(-4px,0,0)}25%{transform:translate3d(8px,-3svh,0)}50%{transform:translate3d(14px,1svh,0)}75%{transform:translate3d(2px,3svh,0)}}
+@keyframes butterflyTwo{0%,100%{transform:translate3d(0,0,0)}25%{transform:translate3d(-6px,2svh,0)}50%{transform:translate3d(5px,-1svh,0)}75%{transform:translate3d(-2px,-3svh,0)}}
 @keyframes butterflyEdge{0%,100%{transform:translate3d(0,0,0)}25%{transform:translate3d(-12px,-3vh,0)}50%{transform:translate3d(8px,-6vh,0)}75%{transform:translate3d(-7px,-2vh,0)}}
 .petals{position:absolute;inset:0;overflow:hidden}
 /* Each petal falls from above the frame to below it before restarting unseen. */
@@ -133,8 +133,8 @@
 .timeline-track{width:4px;height:110px;overflow:visible;background:#7b94a8;box-shadow:0 0 0 1px #faf7efc2}
 .timeline-track i{background:#2b4e6d;border-radius:2px}
 .timeline-position{position:absolute;left:50%;top:0;width:7px;height:7px;border-radius:50%;background:#2b4e6d;box-shadow:0 0 0 2px #f4f0e5b3;transform:translate(-50%,-50%);transition:top .2s linear}
-@media(max-width:650px){.story-timeline{right:14px}.flight-one{width:32px;top:10%}.flight-two{width:26px;top:10%}}
-@media(max-height:650px){.flight-one,.flight-two{top:6%}.timeline-track{height:90px}}
+@media(max-width:650px){.story-timeline{right:14px}.flight-one{width:32px;top:10%}.flight-two{width:26px;top:19%}}
+@media(max-height:650px){.flight-one{top:6%}.timeline-track{height:90px}}
 
 /* Four quiet breaks divide the invitation progress into its four chapters. */
 .timeline-track{-webkit-mask-image:linear-gradient(to bottom,#000 0 calc(25% - 2.5px),transparent calc(25% - 2.5px) calc(25% + 2.5px),#000 calc(25% + 2.5px) calc(50% - 2.5px),transparent calc(50% - 2.5px) calc(50% + 2.5px),#000 calc(50% + 2.5px) calc(75% - 2.5px),transparent calc(75% - 2.5px) calc(75% + 2.5px),#000 calc(75% + 2.5px) 100%);mask-image:linear-gradient(to bottom,#000 0 calc(25% - 2.5px),transparent calc(25% - 2.5px) calc(25% + 2.5px),#000 calc(25% + 2.5px) calc(50% - 2.5px),transparent calc(50% - 2.5px) calc(50% + 2.5px),#000 calc(50% + 2.5px) calc(75% - 2.5px),transparent calc(75% - 2.5px) calc(75% + 2.5px),#000 calc(75% + 2.5px) 100%)}
@@ -142,9 +142,9 @@
 
 /* Two extra slow drifts sit away from the central wording. */
 .flight-four{left:calc(50% - min(42vw,28svh));top:78%;width:29px;animation:butterflyScatter 76s ease-in-out -22s infinite}
-.flight-five{left:calc(50% + min(39vw,29svh));top:22%;width:24px;animation:butterflyScatter 88s ease-in-out -57s infinite reverse}
+.flight-five{left:calc(50% + min(35vw,25svh));top:87%;width:24px;animation:butterflyScatter 88s ease-in-out -57s infinite reverse}
 @keyframes butterflyScatter{0%,100%{transform:translate3d(0,0,0)}25%{transform:translate3d(9px,-2svh,0)}50%{transform:translate3d(-6px,1svh,0)}75%{transform:translate3d(4px,3svh,0)}}
 .place-scene .story-reply{font-size:13px;font-weight:500;letter-spacing:.025em}
 .place-scene .story-reply span{font-size:20px}
-@media(max-width:650px){.flight-four{width:26px}.flight-five{left:calc(100% - 44px);width:22px}}
+@media(max-width:650px){.flight-four{width:26px}.flight-five{left:calc(100% - 58px);width:22px}}
 @media(prefers-reduced-motion:reduce){.flight-four{animation:butterflyScatter 102s ease-in-out -29s infinite!important}.flight-five{animation:butterflyScatter 118s ease-in-out -76s infinite reverse!important}}

@@ -10,8 +10,10 @@ Color reference: [Columbia University Visual Identity — Color](https://visuali
 
 Use the nighttime waterfront photograph for the couple portrait. The user rejected the graduation portrait because only one person was wearing a gown.
 
-Butterflies should follow gently rising and falling paths across the open space above the text as unchanged illustrations; keep the central information clear. Use very slow, ambient motion (roughly 64–82 seconds per crossing). Avoid straight, constant-speed crossings. Do not rotate them or animate the wings with scaling or perspective changes. Keep the scroll progress line over the painted background, as an unframed 4px blue line divided into four sections with small gaps, and a 7px moving dot. No pill, container, border, numbers, or chevron; the user rejected the cream-backed control as inelegant. Group the weekday, June 20, year, and time into a balanced date composition.
+Butterflies should follow gently rising and falling paths within separate areas around the edges as unchanged illustrations; keep the central information clear. Use very slow, ambient motion (roughly 64–82 seconds per drift cycle). Avoid straight, constant-speed crossings. Do not rotate them or animate the wings with scaling or perspective changes. Keep the scroll progress line over the painted background, as an unframed 4px blue line divided into four sections with small gaps, and a 7px moving dot. No pill, container, border, numbers, or chevron; the user rejected the cream-backed control as inelegant. Group the weekday, June 20, year, and time into a balanced date composition.
 
 The opening scroll instruction is plain text with an arrow below it. It must not be a button, look like a button, or respond to clicks.
 
 Scatter the two added butterflies along opposite outer edges, leaving the central information clear. Petals must always fall downward, including with Reduce Motion on. Match “Continue to questions” to the opening scroll hint’s 13px type.
+
+Keep one butterfly in each corner area on phones, with a fifth along the outer left side on desktop. Their paths must stay within these separate areas so they cannot cluster as they move.
