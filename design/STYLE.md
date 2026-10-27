@@ -17,3 +17,5 @@ The opening scroll instruction is plain text with an arrow below it. It must not
 Scatter the two added butterflies along opposite outer edges, leaving the central information clear. Petals must always fall downward, including with Reduce Motion on. Match “Continue to questions” to the opening scroll hint’s 13px type.
 
 Keep one butterfly in each corner area on phones, with a fifth along the outer left side on desktop. Their paths must stay within these separate areas so they cannot cluster as they move.
+
+Keep the bobbing down arrow visible through all four invitation chapters, in a shared overlay independent of the scene crossfades. The opening instruction remains plain text.

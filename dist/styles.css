@@ -148,3 +148,9 @@
 .place-scene .story-reply span{font-size:20px}
 @media(max-width:650px){.flight-four{width:26px}.flight-five{left:calc(100% - 58px);width:22px}}
 @media(prefers-reduced-motion:reduce){.flight-four{animation:butterflyScatter 102s ease-in-out -29s infinite!important}.flight-five{animation:butterflyScatter 118s ease-in-out -76s infinite reverse!important}}
+
+/* The same down arrow stays visible through every invitation chapter. */
+.scroll-invitation{bottom:calc(18% + 33px)}
+.story-scroll-arrow{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);width:20px;height:24px;z-index:5;color:#243d5a;pointer-events:none}
+.story-scroll-arrow svg{display:block}
+@media(max-height:650px){.scroll-invitation{bottom:calc(8% + 33px)}.story-scroll-arrow{bottom:8%}}
