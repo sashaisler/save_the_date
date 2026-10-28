@@ -150,8 +150,10 @@
 @media(max-width:650px){.flight-four{width:26px}.flight-five{left:calc(100% - 58px);width:22px}}
 @media(prefers-reduced-motion:reduce){.flight-four{animation:butterflyScatter 56s ease-in-out -17s infinite!important}.flight-five{animation:butterflyScatterRight 62s ease-in-out -40s infinite reverse!important}}
 
-/* The same down arrow stays visible through every invitation chapter. */
+/* The shared down arrow guides the first three invitation chapters. */
 .scroll-invitation{bottom:calc(18% + 33px)}
 .story-scroll-arrow{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);width:20px;height:24px;z-index:5;color:#243d5a;pointer-events:none}
 .story-scroll-arrow svg{display:block}
 @media(max-height:650px){.scroll-invitation{bottom:calc(8% + 33px)}.story-scroll-arrow{bottom:8%}}
+
+.story-pin:has(.place-scene.is-current) .story-scroll-arrow{display:none}

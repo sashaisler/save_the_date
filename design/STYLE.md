@@ -18,4 +18,4 @@ Scatter the two added butterflies along opposite outer edges, leaving the centra
 
 Keep one butterfly in each corner area on phones, with a fifth along the outer left side on desktop. Their paths must stay within these separate areas so they cannot cluster as they move.
 
-Keep the bobbing down arrow visible through all four invitation chapters, in a shared overlay independent of the scene crossfades. The opening instruction remains plain text.
+Keep the bobbing down arrow visible through the first three invitation chapters, in a shared overlay independent of the scene crossfades. Hide it on the venue chapter, where “Continue to questions” already provides direction. The opening instruction remains plain text.
