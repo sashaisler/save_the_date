@@ -2,31 +2,23 @@
 
 The website lives in `dist/`. It is a static page with no install or build step. All personal settings are in `dist/config.js`.
 
-## The scrolling story
+## Layout and motion
 
-The invitation uses a single pinned watercolor woodland scene, with no banquet table or furniture. The background asset is `dist/assets/woodland-invitation.webp`. Scrolling moves through four chapters: opening, names, date, and venue. The pinned story spans 450svh, with 350svh of scroll travel, so the chapters arrive with slightly less scrolling. Butterflies and petals use self-contained inline SVGs in a separate overlay so they stay visible on Safari. Four butterflies and three petals remain visible on phones, with five butterflies on desktop. Each butterfly stays within a separate area: upper left, upper right, lower left and lower right on phones, plus the outer left side on desktop. Their bounded paths keep them scattered throughout the animation. Butterflies take 29–37 seconds to follow wider rising and falling paths within their separate areas, clear of the central information. Their illustrations do not rotate or deform. The third original butterfly remains desktop-only near the left outer edge. Petals always fall downward from above the viewport to below it, with a sideways sway; they restart offscreen. Reduce Motion keeps slower flight paths and a slower downward petal fall. The progress indicator is an unframed 4px blue line split into four sections with a small dot that follows the scroll position; no pill, border, numbers or chevron. Three small gaps separate the sections, and a fine pale edge keeps it legible over the woodland. Both decorations animate with Reduce Motion on or off.
+The invitation is one normal-flow view containing Save the date, Sasha & Eytan, the watercolor portrait, Sunday June 20, 2027 at 4:30 PM, Woodbury Jewish Center, and the calendar and directions links. It is followed by one complete guest form. There is no pinned scrolling sequence, chapter switching, progress bar, or Next/Back navigation.
 
-`dist/story.js` switches the active chapter using cached scene geometry. Each change runs an independent 850 ms CSS crossfade, so fast swipes and sparse scroll events cannot turn it into a hard cut. Reduced-motion preferences keep a shorter 450 ms opacity fade without movement. The opening has a noninteractive “Scroll down to continue” text hint. A single gently bobbing arrow stays below it and remains visible through the first three story chapters. It hides on the venue chapter, where “Continue to questions” provides the next step, and a slim vertical progress line with a small moving dot stays along the right edge of the story. Phone/touch layouts keep the forest still and reduce decorative layers; animations pause when the story is offscreen. The form logic remains in `dist/app.js`.
+The background is `dist/assets/woodland-invitation.webp`, with no table or furniture. Butterfly and petal SVGs, paths, timings, and phone/reduced-motion behavior are preserved from the checkpoint. Four butterflies and three petals appear on phones; desktop has five butterflies and six petals. Their areas stay separate and petals fall downward, restarting offscreen. Two lightweight botanical sprigs in `dist/assets/hanging-vine.svg` sway slowly around their stems. Reduce Motion stops the vine sway while preserving the expressly requested butterfly and petal movement.
 
-The questions use 14 px labels, 17 px inputs, 15 px answer choices and submit text, and larger helper text for readability. The questions follow the story in three steps: optional title, names, the optional “Spouse or Fiance's Name (if applicable)” field, and required Email Address; mailing address; and likely attendance. Title choices are Mr., Mrs., Ms., Rabbi, Dr., and Other. Other reveals a required custom-title field. Next validates the current step; Back retains all values. The response script stores the selected or custom title in column M, headed “Title,” and the email in column N, headed “Email Address,” without shifting existing columns or guest responses. Spouse/fiance names continue to use the existing name column and submission fields; no checkbox is shown.
+`dist/story.js` only pauses decoration while the invitation is offscreen or the tab is hidden. It never changes page content in response to scrolling. `dist/app.js` handles the calendar, optional title field, and existing response delivery.
 
-Original generated artwork and its prompt are documented in `design/ARTWORK.md`. Copy and Columbia-inspired styling preferences are documented in `design/STYLE.md`.
+All three form groups—name, mailing address, and attendance—are visible together. Desktop uses two columns for name and address, with attendance underneath; phones use one column. Native form validation checks every required field. Labels are 14px, inputs 17px, and answer choices/submit text 15px. Title choices remain Mr., Mrs., Ms., Rabbi, Dr., and Other; Other reveals a required custom title. Existing submission names and the Google Sheet contract are unchanged, including title in column M and email in column N.
 
-## Add your photos
+## Photos and event details
 
-The names chapter features `dist/assets/sasha-eytan-waterfront.webp`, a transparent watercolor portrait based on the couple's nighttime waterfront photo. Its image and descriptive alt text are set directly in `dist/index.html`.
+The invitation uses `dist/assets/sasha-eytan-waterfront.webp`, the transparent watercolor portrait based on the nighttime waterfront photo. Its image and alt text are in `dist/index.html`. Names, venue, time, calendar start, registry URL and response endpoint are in `dist/config.js`. The old optional chapter photo slots are unused by the combined layout.
 
-1. Put any extra photos in `dist/assets/` (for example `together.jpg` and `little-moment.jpg`).
-2. Set the two optional paths in `config.js`:
+The calendar starts at 4:30 PM New York time on June 20, 2027; `calendarStart` includes the UTC offset. Set `registryUrl` when available; it must start with `https://`.
 
-   ```js
-   photos: {
-     together: 'assets/together.jpg',
-     littleMoment: 'assets/little-moment.jpg'
-   },
-   ```
-
-The two optional photo slots are faded into the venue and opening chapters. Their paths are blank placeholders in the configuration; leaving them blank keeps the illustrated scene. Portrait or square photos work best. A missing image leaves the illustrated background in place. The wedding time is 4:30 PM New York time, shown in the date and venue chapters. `calendarStart` includes the New York UTC offset for the calendar download. Set `registryUrl` when it is available. Registry URLs must start with `https://`.
+The earlier scrolling version is preserved by the Git tag `checkpoint-2026-11-05` on GitHub.
 
 ## Response connection
 

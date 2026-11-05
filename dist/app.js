@@ -39,40 +39,6 @@
   siteOrigin.value = window.location.origin;
   form.append(siteOrigin);
 
-  // The guest questions are three short chapters, with their values retained when going back.
-  const steps = Array.from(document.querySelectorAll('[data-step]'));
-  const stepLabels = ['01 — NAME', '02 — ADDRESS', '03 — ATTENDANCE'];
-  let currentStep = 0;
-  const showStep = (index, focus = true) => {
-    currentStep = Math.max(0, Math.min(steps.length - 1, index));
-    steps.forEach((step, i) => { step.hidden = i !== currentStep; });
-    form.dataset.currentStep = String(currentStep);
-    $('.step-label').textContent = stepLabels[currentStep];
-    document.querySelectorAll('.step-dots i').forEach((dot, i) => dot.classList.toggle('active', i <= currentStep));
-    if (focus) {
-      const legend = steps[currentStep].querySelector('legend');
-      legend.tabIndex = -1; legend.focus({ preventScroll: true });
-      form.scrollIntoView({ behavior: motion.matches ? 'instant' : 'smooth', block: 'start' });
-    }
-  };
-  const nextStep = () => {
-    const invalid = Array.from(steps[currentStep].querySelectorAll('input, select')).find(input => !input.disabled && !input.checkValidity());
-    if (invalid) { invalid.reportValidity(); return; }
-    showStep(currentStep + 1);
-  };
-  document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', nextStep));
-  document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => showStep(currentStep - 1)));
-  form.addEventListener('invalid', event => {
-    const step = event.target.closest('[data-step]');
-    if (step && Number(step.dataset.step) !== currentStep) showStep(Number(step.dataset.step), false);
-  }, true);
-  form.addEventListener('keydown', event => {
-    if (event.key === 'Enter' && currentStep < steps.length - 1 && event.target.tagName === 'INPUT') {
-      event.preventDefault(); nextStep();
-    }
-  });
-  showStep(0, false);
-
   const title = $('#title');
   const otherTitle = $('#titleOther');
   const syncTitle = (focus = false) => {
@@ -138,7 +104,7 @@
     else { activeRequest = null; retryRequest = null; showError('Your details weren’t saved. Please try again in a moment.'); }
   });
   $('#edit-response').addEventListener('click', () => {
-    showStep(0, false); form.reset(); syncTitle(); syncSpouseName();
+    form.reset(); syncTitle(); syncSpouseName();
     $('#success').hidden = true; form.hidden = false; $('#form-error').hidden = true;
     button.disabled = false; button.firstElementChild.textContent = 'Submit'; $('#firstName').focus();
   });
