@@ -6,7 +6,7 @@ The website lives in `dist/`. It is a static page with no install or build step.
 
 The invitation is one normal-flow view containing Save the date, Sasha & Eytan, the watercolor portrait, Sunday June 20, 2027 at 4:30 PM, Woodbury Jewish Center, and the calendar and directions links. It is followed by one complete guest form. There is no pinned scrolling sequence, chapter switching, progress bar, or Next/Back navigation.
 
-The background is `dist/assets/woodland-invitation.webp`, with no table or furniture. Butterfly and petal SVGs, paths, timings, and phone/reduced-motion behavior are preserved from the checkpoint. Four butterflies and three petals appear on phones; desktop has five butterflies and six petals. Their areas stay separate and petals fall downward, restarting offscreen. Two lightweight botanical sprigs in `dist/assets/hanging-vine.svg` sway slowly around their stems. Reduce Motion stops the vine sway while preserving the expressly requested butterfly and petal movement.
+The background is `dist/assets/woodland-invitation.webp`, with no table or furniture. Butterfly and petal SVGs, paths, timings, and phone/reduced-motion behavior are preserved from the checkpoint. Four butterflies and three petals appear on phones; desktop has five butterflies and six petals. Their areas stay separate and petals fall downward, restarting offscreen. The woodland branches are part of the static background artwork; no separate swaying branch overlays are displayed.
 
 `dist/story.js` only pauses decoration while the invitation is offscreen or the tab is hidden. It never changes page content in response to scrolling. `dist/app.js` handles the calendar, optional title field, and existing response delivery.
 
