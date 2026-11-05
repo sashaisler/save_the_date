@@ -6,7 +6,7 @@ Carry one continuous watercolor woodland backdrop through the invitation and for
 
 Use the nighttime waterfront watercolor portrait. The graduation portrait was rejected because only one person wore a gown. Keep the artwork free of tables, chairs, candles and banquet decorations. Do not add a top-left monogram or crown ornament. The favicon stays S&E.
 
-Use white butterfly wings with subtle neutral shading and fine outlines so they remain visible against the paper. Preserve the existing butterflies and petals: the same illustrations, scattered areas, paths and timings, with no wing scaling or perspective changes. Petals fall downward. Both continue to animate with Reduce Motion on, as explicitly requested. Keep the woodland branches in the background artwork static. Do not add separate swaying branch overlays.
+Use the original Columbia blue butterfly palette. Preserve the existing butterflies and petals: the same illustrations, scattered areas, paths and timings, with no wing scaling or perspective changes. Petals fall downward. Both continue to animate with Reduce Motion on, as explicitly requested. Keep the woodland branches in the background artwork static. Do not add separate swaying branch overlays.
 
 Guest-facing wording stays short and literal. No romantic slogans, story metaphors, heart ornaments or sentimental preambles. The form note is “Formal invitation to follow.” Preserve the optional title, Spouse or Fiance's Name (if applicable), required email, mailing address and early attendance question.
 
