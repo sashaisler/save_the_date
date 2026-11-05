@@ -82,3 +82,5 @@ Open `http://localhost:4173`. Reduced Motion keeps page movement still while the
 The public GitHub Pages address is https://sashaisler.github.io/save_the_date/. The `Deploy wedding website` GitHub Actions workflow publishes only `dist/` when website files change on `main`. In repository Settings → Pages, the publishing source must be **GitHub Actions**. Publishing the repository root directly will fail because the entry page is `dist/index.html`.
 
 The original Sites deployment is private to you. Google Sheets acknowledgements support both the Sites origin and `https://sashaisler.github.io`; each form includes its current origin and the script validates it against these configured addresses. When adding another host, configure its exact HTTPS origin in the script. Your own domain is optional.
+
+The guest form omits the Country question. It submits the existing United States default as a hidden value to remain compatible with the response handler.
