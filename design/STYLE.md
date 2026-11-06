@@ -8,6 +8,6 @@ Use the nighttime waterfront watercolor portrait. The graduation portrait was re
 
 Use the original Columbia blue butterfly palette. Preserve the existing butterflies and petals: the same illustrations, scattered areas, paths and timings, with no wing scaling or perspective changes. Petals fall downward. Both continue to animate with Reduce Motion on, as explicitly requested. Keep the woodland branches in the background artwork static. Do not add separate swaying branch overlays.
 
-Guest-facing wording stays short and literal. No romantic slogans, story metaphors, heart ornaments or sentimental preambles. The form note is “Formal invitation to follow.” Preserve the optional title, Spouse or Fiance's Name (if applicable), required email, mailing address and early attendance question.
+Guest-facing wording stays short and literal. No romantic slogans, story metaphors, heart ornaments or sentimental preambles. The form note is “Formal invitation to follow.” Make this note a clearly visible serif subtitle, and keep Continue to questions easy to read. Show a discreet Registry / Details coming soon placeholder beneath the form until a registry URL is supplied. Preserve the optional title, Spouse or Fiance's Name (if applicable), required email, mailing address and early attendance question.
 
 Keep the response sheet and confirmation-email behavior intact. The previous design is saved at the Git tag checkpoint-2026-11-05.
