@@ -85,4 +85,4 @@ The original Sites deployment is private to you. Google Sheets acknowledgements 
 
 The guest form omits the Country question. It submits the existing United States default as a hidden value to remain compatible with the response handler.
 
-On desktop and Android, Add to calendar offers Google Calendar and Outlook web event editors, plus a clearly labeled Apple Calendar / Other .ics option. iPhone/iPad keeps its existing direct .ics handoff. No event is saved automatically. Web calendar editors may supply their own default end time; the event description says the wedding end time is to be confirmed, and no wedding end time is configured.
+Add to calendar is a direct Google Calendar event link on every device. It opens a prefilled event in a new tab with no menu or calendar-file download. Guests must save the event themselves. Both Google date endpoints use the 4:30 PM New York start instant because the wedding end time has not been supplied; the description states that the end time is to be confirmed.

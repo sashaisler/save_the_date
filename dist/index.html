@@ -14,10 +14,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/woodland-invitation.webp">
-  <link rel="stylesheet" href="styles.css?v=20261112-calendar-options">
+  <link rel="stylesheet" href="styles.css?v=20261112-google-calendar">
   <script src="config.js?v=20261026-time-scroll" defer></script>
   <script src="story.js?v=20261105-combined" defer></script>
-  <script src="app.js?v=20261112-calendar-options" defer></script>
+  <script src="app.js?v=20261112-google-calendar" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#your-details">Skip to questions</a>
@@ -32,7 +32,7 @@
 <h1 class="invitation-names"><span data-name="0">Sasha</span> <i>&amp;</i> <span data-name="1">Eytan</span></h1>
 <img class="invitation-portrait" src="assets/sasha-eytan-waterfront.webp" alt="Watercolor portrait of Sasha and Eytan" width="1122" height="1402" decoding="async">
 <div class="invitation-details"><p class="wedding-date" aria-label="Sunday, June 20th, 2027">Sunday, June 20, 2027</p><p class="invitation-time" data-time>4:30 PM</p><p class="invitation-venue" data-venue>Woodbury Jewish Center</p><p class="invitation-location" data-location>Woodbury, New York</p></div>
-<div class="quiet-links"><button id="calendar" type="button">Add to calendar <span aria-hidden="true">↗</span></button><a href="https://www.google.com/maps/search/?api=1&amp;query=Woodbury+Jewish+Center+NY" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div>
+<div class="quiet-links"><a id="calendar" href="https://calendar.google.com/calendar/r/eventedit?action=TEMPLATE&amp;text=Sasha+%26+Eytan+%E2%80%94+Wedding&amp;dates=20270620T203000Z%2F20270620T203000Z&amp;stz=America%2FNew_York&amp;etz=America%2FNew_York&amp;details=4%3A30+PM+New+York+time.+End+time+to+be+confirmed.+Formal+invitation+to+follow.&amp;location=Woodbury+Jewish+Center%2C+Woodbury%2C+New+York" target="_blank" rel="noopener noreferrer">Add to calendar <span aria-hidden="true">↗</span></a><a href="https://www.google.com/maps/search/?api=1&amp;query=Woodbury+Jewish+Center+NY" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div>
 <div class="registry-note"><span class="registry-label">Registry</span><a id="registry-link" href="#" hidden target="_blank" rel="noopener noreferrer">View registry <span aria-hidden="true">↗</span></a><span id="registry-pending">&lt;link here&gt;</span></div>
 <a class="story-reply" href="#your-details">Enter information below <span aria-hidden="true">↓</span></a>
 </div>
@@ -68,14 +68,4 @@
 <iframe title="Secure response delivery" name="sheet-response" id="sheet-response" hidden></iframe>
 <div class="end-signature"><span data-name="0">Sasha</span> <i>&</i> <span data-name="1">Eytan</span><small>JUNE 20, 2027</small></div><a href="#story" class="replay-story">Back to top <span aria-hidden="true">↟</span></a>
 </div></section></main>
-<dialog id="calendar-picker" class="calendar-dialog" aria-labelledby="calendar-title" aria-describedby="calendar-date">
-  <button id="calendar-close" class="calendar-close" type="button" aria-label="Close calendar options">×</button>
-  <h2 id="calendar-title">Add to calendar</h2>
-  <p id="calendar-date"></p>
-  <div class="calendar-options">
-    <a id="calendar-google" href="https://calendar.google.com/" target="_blank" rel="noopener noreferrer">Google Calendar <span aria-hidden="true">↗</span></a>
-    <a id="calendar-outlook" href="https://outlook.live.com/calendar/" target="_blank" rel="noopener noreferrer">Outlook <span aria-hidden="true">↗</span></a>
-    <button id="calendar-ics" type="button"><span>Apple Calendar / Other</span><span class="calendar-format">Calendar file (.ics)</span></button>
-  </div>
-</dialog>
 </body></html>
