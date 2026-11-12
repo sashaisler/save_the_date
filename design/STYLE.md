@@ -14,4 +14,4 @@ Keep the response sheet and confirmation-email behavior intact. The previous des
 
 Add to calendar opens the prefilled Google Calendar event directly in a new tab on every device. No calendar chooser, file download, or Apple/Outlook alternative is displayed. Guests review the event and save it in Google Calendar.
 
-Use Street and State as the address labels. Leave input lines blank until the guest enters information; do not add placeholder examples or a select-title prompt. Preserve visible labels, autocomplete, and the title choices.
+Use Street and State as the address labels. Keep field labels close to their input rules using a compact input height while preserving the readable input font size. Leave input lines blank until the guest enters information; do not add placeholder examples or a select-title prompt. Preserve visible labels, autocomplete, and the title choices.
