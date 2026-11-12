@@ -13,3 +13,5 @@ Guest-facing wording stays short and literal. No romantic slogans, story metapho
 Keep the response sheet and confirmation-email behavior intact. The previous design is saved at the Git tag checkpoint-2026-11-05.
 
 Desktop Add to calendar opens a small calendar choice dialog. Google Calendar and Outlook use prefilled event links; Apple Calendar / Other clearly labels its .ics file. Preserve the existing direct calendar-file handoff on iPhones and iPads. Do not replace a one-off wedding event with a calendar subscription.
+
+Use Street and State as the address labels. Leave input lines blank until the guest enters information; do not add placeholder examples or a select-title prompt. Preserve visible labels, autocomplete, and the title choices.
