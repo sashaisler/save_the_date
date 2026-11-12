@@ -10,7 +10,7 @@ The background is `dist/assets/woodland-invitation.webp`, with no table or furni
 
 `dist/story.js` only pauses decoration while the invitation is offscreen or the tab is hidden. It never changes page content in response to scrolling. `dist/app.js` handles the calendar, optional title field, and existing response delivery.
 
-All three form groups—name, mailing address, and attendance—are visible together. Desktop uses two columns for name and address, with attendance underneath; phones use one column. Native form validation checks every required field. Labels are 14px, inputs 17px, and answer choices/submit text 15px. Title choices remain Mr., Mrs., Ms., Rabbi, Dr., and Other; Other reveals a required custom title. Existing submission names and the Google Sheet contract are unchanged, including title in column M and email in column N.
+All three form groups—name, mailing address, and attendance—are visible together. Desktop uses two columns for name and address, with attendance underneath; phones use one column. Native form validation checks every required field. Labels and typed input text share the same font, weight and color: 15px on desktop and 16px on phones. Answer choices and Submit text are 16px. Title choices remain Mr., Mrs., Ms., Rabbi, Dr., and Other; Other reveals a required custom title. Existing submission names and the Google Sheet contract are unchanged, including title in column M and email in column N.
 
 ## Photos and event details
 
