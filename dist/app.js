@@ -5,7 +5,7 @@
   const $ = selector => document.querySelector(selector);
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   document.querySelectorAll('[data-name]').forEach(el => { el.textContent = config.names[Number(el.dataset.name)]; });
-  document.title = `${config.names.join(' & ')} — Save the date`;
+document.title = `${config.names.join(' & ')} — Wedding`;
   $('.wedding-date').setAttribute('aria-label', config.dateLabel);
   if (config.venue !== 'Woodbury Jewish Center') $('[data-venue]').textContent = config.venue;
   $('[data-location]').textContent = config.location;
