@@ -75,7 +75,7 @@ From this directory:
 python3 -m http.server 4173 --directory dist
 ```
 
-Open `http://localhost:4173`. Reduced Motion keeps page movement still while the requested gentle butterfly and petal animations continue. The calendar download starts at 4:30 PM in New York on June 20, 2027 (20:30 UTC). No end time is specified because it has not been supplied.
+Open `http://localhost:4173`. Reduced Motion keeps page movement still while the requested gentle butterfly and petal animations continue. The calendar event starts at 4:30 PM in New York on June 20, 2027 (20:30 UTC). No end time is specified because it has not been supplied.
 
 ## Hosting
 
@@ -84,3 +84,5 @@ The public GitHub Pages address is https://sashaisler.github.io/save_the_date/. 
 The original Sites deployment is private to you. Google Sheets acknowledgements support both the Sites origin and `https://sashaisler.github.io`; each form includes its current origin and the script validates it against these configured addresses. When adding another host, configure its exact HTTPS origin in the script. Your own domain is optional.
 
 The guest form omits the Country question. It submits the existing United States default as a hidden value to remain compatible with the response handler.
+
+On desktop and Android, Add to calendar offers Google Calendar and Outlook web event editors, plus a clearly labeled Apple Calendar / Other .ics option. iPhone/iPad keeps its existing direct .ics handoff. No event is saved automatically. Web calendar editors may supply their own default end time; the event description says the wedding end time is to be confirmed, and no wedding end time is configured.

@@ -21,16 +21,43 @@
     image.addEventListener('load', () => { holder.replaceChildren(image); holder.hidden = false; }); image.src = path;
   }
 
-  $('#calendar').addEventListener('click', () => {
+  const calendarButton = $('#calendar');
+  const calendarPicker = $('#calendar-picker');
+  const startDate = new Date(config.calendarStart);
+  const startsAt = startDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const eventTitle = config.names.join(' & ') + ' — Wedding';
+  const eventLocation = config.venue + ', ' + config.location;
+  const eventDescription = config.time + ' New York time. End time to be confirmed. Formal invitation to follow.';
+  const googleCalendar = new URL('https://calendar.google.com/calendar/r/eventedit');
+  // Google expects a range; equal endpoints avoid inventing a wedding end time.
+  googleCalendar.search = new URLSearchParams({action: 'TEMPLATE', text: eventTitle,
+    dates: startsAt + '/' + startsAt, stz: 'America/New_York', etz: 'America/New_York',
+    details: eventDescription, location: eventLocation}).toString();
+  $('#calendar-google').href = googleCalendar.href;
+  const outlookCalendar = new URL('https://outlook.live.com/calendar/0/deeplink/compose');
+  outlookCalendar.search = new URLSearchParams({path: '/calendar/action/compose', rru: 'addevent',
+    subject: eventTitle, startdt: startDate.toISOString(), body: eventDescription,
+    location: eventLocation}).toString();
+  $('#calendar-outlook').href = outlookCalendar.href;
+  $('#calendar-date').textContent = config.dateLabel + ' · ' + config.time + ' (New York)';
+  const downloadCalendar = () => {
     const escapeICS = value => value.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
-    const startsAt = new Date(config.calendarStart).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
     const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//June Twenty//Wedding//EN', 'BEGIN:VEVENT',
       'UID:sasha-eytan-20270620@save-the-date', `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}`,
-      `DTSTART:${startsAt}`, `SUMMARY:${escapeICS(config.names.join(' & ') + ' are getting married')}`,
-      `LOCATION:${escapeICS(config.venue + ', ' + config.location)}`, 'DESCRIPTION:4:30 PM New York time. Formal invitation and final RSVP to follow.', 'END:VEVENT', 'END:VCALENDAR'];
+      `DTSTART:${startsAt}`, `SUMMARY:${escapeICS(eventTitle)}`,
+      `LOCATION:${escapeICS(eventLocation)}`, `DESCRIPTION:${escapeICS(eventDescription)}`, 'END:VEVENT', 'END:VCALENDAR'];
     const url = URL.createObjectURL(new Blob([lines.join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' }));
     const a = document.createElement('a'); a.href = url; a.download = 'sasha-and-eytan-save-the-date.ics'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const appleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (!appleMobile) calendarButton.setAttribute('aria-haspopup', 'dialog');
+  calendarButton.addEventListener('click', () => {
+    if (appleMobile) downloadCalendar();
+    else calendarPicker.showModal();
   });
+  $('#calendar-close').addEventListener('click', () => calendarPicker.close());
+  $('#calendar-ics').addEventListener('click', () => { downloadCalendar(); calendarPicker.close(); });
+  ['#calendar-google', '#calendar-outlook'].forEach(selector => $(selector).addEventListener('click', () => calendarPicker.close()));
 
   const form = $('#guest-form');
   const siteOrigin = document.createElement('input');
